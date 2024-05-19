@@ -5,6 +5,7 @@ coin.txt
 platform.txt
 brick.txt
 mushroom.txt
+question.txt
 goomba.txt
 #
 [OBJECTS]
@@ -16,7 +17,7 @@ goomba.txt
 0	120	10
 
 #COIN
-4	100	120
+7	100	120
 4	120	120
 4	140	120
 4	160	120

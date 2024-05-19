@@ -4,6 +4,7 @@ mario.txt
 coin.txt
 platform.txt
 brick.txt
+question.txt
 mushroom.txt
 #
 [OBJECTS]

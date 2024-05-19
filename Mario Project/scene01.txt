@@ -5,6 +5,7 @@ brick.txt
 coin.txt
 goomba.txt
 mushroom.txt
+question.txt
 platform.txt
 #
 [OBJECTS]
