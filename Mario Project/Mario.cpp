@@ -6,6 +6,7 @@
 
 #include "Goomba.h"
 #include "Mushroom.h"
+#include "Question.h"
 #include "Coin.h"
 #include "Portal.h"
 
@@ -55,6 +56,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CQuestion*>(e->obj))
+		OnCollisionWithQuestion(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -92,7 +95,17 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		}
 	}
 }
-
+void CMario::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
+{
+	CQuestion* question = dynamic_cast<CQuestion*>(e->obj);
+	if (e->ny > 0)
+	{
+		if (question->GetState() != QUESTION_STATE_AFTER)
+		{
+			question->SetState(QUESTION_STATE_AFTER);
+		}
+	}
+}
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();

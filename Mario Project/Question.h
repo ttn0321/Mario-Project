@@ -17,6 +17,7 @@
 class CQuestion: public CGameObject {
 public:
 	CQuestion(float x, float y);
+	virtual void SetState(int state);
 	void Render();
 	void Update(DWORD dt);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
