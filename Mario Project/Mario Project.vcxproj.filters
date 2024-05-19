@@ -58,6 +58,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -127,6 +130,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

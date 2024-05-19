@@ -2,8 +2,9 @@
 [ASSETS]
 mario.txt
 coin.txt
-cloud.txt
+platform.txt
 brick.txt
+mushroom.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
