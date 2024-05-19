@@ -4,8 +4,10 @@ mario.txt
 coin.txt
 platform.txt
 brick.txt
-question.txt
 mushroom.txt
+question.txt
+goomba.txt
+koopa.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

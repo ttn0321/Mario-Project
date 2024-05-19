@@ -8,7 +8,7 @@
 #include "Goomba.h"
 #include "Mushroom.h"
 #include "Question.h"
-//#include "Koopas.h"
+#include "Koopa.h"
 
 
 class CPlayScene: public CScene

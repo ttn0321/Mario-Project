@@ -64,6 +64,9 @@
     <ClCompile Include="Question.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -139,6 +142,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Question.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopa.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
