@@ -1,5 +1,6 @@
 #include "Question.h"
-CQuestion::CQuestion(float x, float y) {
+CQuestion::CQuestion(float x, float y, int contain) {
+	this->contain = contain;
 	SetState(QUESTION_STATE_BEFORE);
 }
 void CQuestion::Render()
@@ -24,5 +25,11 @@ void CQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 }
 void CQuestion::SetState(int state)
 {
+	if (state == QUESTION_STATE_AFTER) {
+		if (contain == 4) {
+			item = new CCoin(x, y);
+			item->SetState(COIN_STATE_SPAWN);
+		}
+	}
 	CGameObject::SetState(state);
 }
