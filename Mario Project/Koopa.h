@@ -4,7 +4,7 @@
 
 #define KOOPA_GRAVITY 0.002f
 #define KOOPA_WALKING_SPEED 0.05f
-#define KOOPA_SLIDING_SPEED 0.15f
+#define KOOPA_SLIDING_SPEED 0.01f
 
 #define KOOPA_BBOX_WIDTH 16
 #define KOOPA_BBOX_HEIGHT 26
@@ -44,6 +44,8 @@ protected:
     virtual void OnNoCollision(DWORD dt);
 
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+    void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+    void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public:

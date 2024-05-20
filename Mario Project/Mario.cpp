@@ -15,11 +15,11 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	
 	vy += ay * dt;
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
@@ -104,7 +104,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() == KOOPA_STATE_WALKING)
+		if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_TRANSITION)
 		{
 			koopa->SetState(KOOPA_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -144,7 +144,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() != KOOPA_STATE_SHELL)
+			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_SHELL_SLIDE)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -468,7 +468,12 @@ void CMario::ReleaseKoopa()
 	if (isHoldingKoopa && heldKoopa)
 	{
 		heldKoopa->SetHeld(false, nullptr);
-		heldKoopa->SetState(KOOPA_STATE_SHELL);
+		heldKoopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+		if (nx > 0)
+			heldKoopa->SetSpeed(KOOPA_SLIDING_SPEED, 0); // Kick forward to the right
+		else
+			heldKoopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0); // Kick forward to the left
+
 		isHoldingKoopa = false;
 		heldKoopa = nullptr;
 	}

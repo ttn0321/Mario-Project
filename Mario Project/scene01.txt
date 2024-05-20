@@ -15,7 +15,7 @@ koopa.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	20	10
+0	200	10
 
 # BRICKS
 1	0	148
@@ -34,6 +34,7 @@ koopa.txt
 
 #Goomba
 8	300	10
+8	20	10
 
 #Platform
 5	90	136	16	15	16	51000	52000	53000

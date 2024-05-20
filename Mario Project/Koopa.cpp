@@ -1,4 +1,9 @@
 #include "Koopa.h"
+#include "Goomba.h"
+#include "Question.h"
+#include "Koopa.h"
+#include "Collision.h"
+#include "Game.h"
 
 CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
 {
@@ -34,9 +39,11 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+    if (dynamic_cast<CGoomba*>(e->obj))
+        OnCollisionWithGoomba(e);
+    if (dynamic_cast<CKoopa*>(e->obj))
+        OnCollisionWithKoopa(e);
     if (!e->obj->IsBlocking()) return;
-    if (dynamic_cast<CKoopa*>(e->obj)) return;
-
     if (e->ny != 0)
     {
         vy = 0;
@@ -46,7 +53,40 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         vx = -vx;
     }
 }
+void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+    CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+    if (state == KOOPA_STATE_SHELL_SLIDE)
+    {
+        goomba->SetState(GOOMBA_STATE_DIE);
+    }
+}
+void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+    CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+    if (state == KOOPA_STATE_SHELL_SLIDE)
+    {
+        if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_TRANSITION)
+        {
+            koopa->SetState(KOOPA_STATE_SHELL);
+            vx = -vx;
+        }
+        if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL_SLIDE) {
 
+            if (vx > 0)
+            {
+                koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+                koopa->SetSpeed(KOOPA_SLIDING_SPEED, 0);
+            }
+            else if (vx < 0)
+            {
+                koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+                koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
+            }
+            vx = -vx;
+        }
+    }
+}
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
     if (isHeld && holder)
@@ -111,7 +151,6 @@ void CKoopa::SetState(int state)
     switch (state)
     {
     case KOOPA_STATE_SHELL:
-        y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
         vx = 0;
         vy = 0;
         break;

@@ -57,7 +57,10 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isDeleted = true;
 		return;
 	}
-
+	if (state == GOOMBA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
+	{
+		vx = -vx; // Turn around
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
