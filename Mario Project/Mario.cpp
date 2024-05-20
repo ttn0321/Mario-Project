@@ -102,7 +102,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit 
+	
 	if (e->ny < 0)
 	{
 		if (koopa->GetState() != KOOPA_STATE_SHELL)
@@ -116,7 +116,17 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
-	else // hit by Goomba
+	else if (koopa->GetState() == KOOPA_STATE_SHELL) {
+		if (vx > 0) {
+			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+			koopa->SetSpeed(KOOPA_SLIDING_SPEED,0);
+		}
+		else if (vx < 0) {
+			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+			koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
+		}
+	}
+	else 
 	{
 		if (untouchable == 0)
 		{

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Platform.h"
 
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
@@ -34,6 +35,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public: 	
 	CGoomba(float x, float y);

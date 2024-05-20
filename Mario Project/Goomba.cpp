@@ -92,3 +92,23 @@ void CGoomba::SetState(int state)
 			break;
 	}
 }
+
+bool CGoomba::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
+{
+	float xProbe = x + (vx > 0 ? GOOMBA_BBOX_WIDTH / 2 : -GOOMBA_BBOX_WIDTH / 2);
+	float yProbe = y + GOOMBA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
+
+	for (auto obj : *coObjects)
+	{
+		float l, t, r, b;
+		obj->GetBoundingBox(l, t, r, b);
+		if (dynamic_cast<CPlatform*>(obj)) // Assuming you have a platform class
+		{
+			if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
+			{
+				return false; // Ground detected
+			}
+		}
+	}
+	return true; // No ground detected
+}

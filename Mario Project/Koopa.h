@@ -1,8 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "Platform.h"
 
 #define KOOPA_GRAVITY 0.002f
 #define KOOPA_WALKING_SPEED 0.05f
+#define KOOPA_SLIDING_SPEED 0.15f
 
 
 #define KOOPA_BBOX_WIDTH 16
@@ -36,6 +38,7 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public:
 	CKoopa(float x, float y);

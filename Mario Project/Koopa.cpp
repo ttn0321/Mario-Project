@@ -1,5 +1,6 @@
 #include "Koopa.h"
 
+
 CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -56,7 +57,10 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		return;
 	}
-
+	if (state == KOOPA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
+	{
+		vx = -vx; // Turn around
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -94,8 +98,27 @@ void CKoopa::SetState(int state)
 		vx = -KOOPA_WALKING_SPEED;
 		break;
 	case KOOPA_STATE_SHELL_SLIDE:
-		vx = -KOOPA_WALKING_SPEED*2;
+		vx = -KOOPA_SLIDING_SPEED;
 		break;
 	}
 }
 
+bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
+{
+	float xProbe = x + (vx > 0 ? KOOPA_BBOX_WIDTH / 2 : -KOOPA_BBOX_WIDTH / 2);
+	float yProbe = y + KOOPA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
+
+	for (auto obj : *coObjects)
+	{
+		float l, t, r, b;
+		obj->GetBoundingBox(l, t, r, b);
+		if (dynamic_cast<CPlatform*>(obj)) // Assuming you have a platform class
+		{
+			if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
+			{
+				return false; // Ground detected
+			}
+		}
+	}
+	return true; // No ground detected
+}
