@@ -169,4 +169,6 @@ public:
 	void PickUpKoopa(CKoopa* koopa);
 	void ReleaseKoopa();
 	void SetAPressed(bool state);
+
+	void addCoin() { coin++; }
 };

@@ -57,7 +57,11 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 {
+    CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+    LPGAMEOBJECT marioObj = currentScene->GetPlayer();
+    CMario* mario = dynamic_cast<CMario*>(marioObj);  // Cast to CMario to access Mario-specific methods
     CQuestion* question = dynamic_cast<CQuestion*>(e->obj);
+
     if (state == KOOPA_STATE_SHELL_SLIDE)
     {
         if (e->ny == 0)
@@ -65,11 +69,15 @@ void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
             if (question->GetState() != QUESTION_STATE_AFTER)
             {
                 question->SetState(QUESTION_STATE_AFTER);
+                if (question->GetContain() == 1)
+                {
+                    mario->addCoin();  // Increase Mario's coin count
+                }
             }
         }
     }
-
 }
+
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
     CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
