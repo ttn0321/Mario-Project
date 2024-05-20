@@ -141,8 +141,11 @@ public:
 		isOnPlatform = false;
 		coin = 0;
 	}
+
 	bool isHoldingKoopa;
 	CKoopa* heldKoopa;
+	bool isAPressed;
+
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
@@ -164,4 +167,5 @@ public:
 
 	void PickUpKoopa(CKoopa* koopa);
 	void ReleaseKoopa();
+	void SetAPressed(bool state);
 };
