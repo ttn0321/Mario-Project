@@ -44,8 +44,11 @@ protected:
     virtual void OnNoCollision(DWORD dt);
 
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+    void OnCollisionWithQuestion(LPCOLLISIONEVENT e);
+
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public:

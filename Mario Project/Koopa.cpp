@@ -41,8 +41,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
     if (dynamic_cast<CGoomba*>(e->obj))
         OnCollisionWithGoomba(e);
-    if (dynamic_cast<CKoopa*>(e->obj))
+    else if (dynamic_cast<CKoopa*>(e->obj))
         OnCollisionWithKoopa(e);
+    else if (dynamic_cast<CQuestion*>(e->obj))
+        OnCollisionWithQuestion(e);
     if (!e->obj->IsBlocking()) return;
     if (e->ny != 0)
     {
@@ -52,6 +54,21 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
     {
         vx = -vx;
     }
+}
+void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
+{
+    CQuestion* question = dynamic_cast<CQuestion*>(e->obj);
+    if (state == KOOPA_STATE_SHELL_SLIDE)
+    {
+        if (e->ny == 0)
+        {
+            if (question->GetState() != QUESTION_STATE_AFTER)
+            {
+                question->SetState(QUESTION_STATE_AFTER);
+            }
+        }
+    }
+
 }
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
