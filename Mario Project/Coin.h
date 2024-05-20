@@ -16,9 +16,16 @@
 #define COIN_STATE_NORMAL 100
 #define COIN_STATE_SPAWN 200
 
+#define COIN_SPAWN_TIME 450
+
 class CCoin : public CGameObject {
+	float ax;				// acceleration on x 
+	float ay;				// acceleration on y 
+	ULONGLONG state_start;
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {
+		this->ax = 0;
+		this->ay = COIN_GRAVITY;
 		SetState(COIN_STATE_NORMAL);
 	}
 	void Render();

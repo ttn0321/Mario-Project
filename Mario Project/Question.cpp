@@ -1,5 +1,6 @@
 #include "Question.h"
 #include "Mushroom.h"
+#include "Coin.h"
 #include "PlayScene.h"
 #include "Game.h"
 
@@ -27,16 +28,24 @@ void CQuestion::GetBoundingBox(float& l, float& t, float& r, float& b) {
 }
 
 void CQuestion::SetState(int state) {
-    if (state == QUESTION_STATE_AFTER && contain == 6) {
-        // Get the current scene
+    if (state == QUESTION_STATE_AFTER && contain == 1) {
+
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        // Create a mushroom object
-        CMushroom* mushroom = new CMushroom(x, y - 16);  // Adjust the y position as needed
+        CCoin* coin = new CCoin(x, y - 16);  
+        coin->SetState(COIN_STATE_SPAWN);
+
+        objects.push_back(coin);
+    }
+    if (state == QUESTION_STATE_AFTER && contain == 6) {
+        
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CMushroom* mushroom = new CMushroom(x, y - 16);  
         mushroom->SetState(MUSHROOM_STATE_WALKING);
 
-        // Add the mushroom to the scene objects
         objects.push_back(mushroom);
     }
 

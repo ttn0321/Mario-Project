@@ -170,13 +170,17 @@ void CMario::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 		if (question->GetState() != QUESTION_STATE_AFTER)
 		{
 			question->SetState(QUESTION_STATE_AFTER);
+			if (question->GetContain() == 1)
+				coin++;
 		}
 	}
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
+	CCoin* Ocoin = dynamic_cast<CCoin*>(e->obj);
 	e->obj->Delete();
-	coin++;
+	if(Ocoin->GetState() == COIN_STATE_NORMAL)
+		coin++;
 }
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
