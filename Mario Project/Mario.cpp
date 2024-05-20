@@ -102,7 +102,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 
-	
 	if (e->ny < 0)
 	{
 		if (koopa->GetState() != KOOPA_STATE_SHELL)
@@ -112,21 +111,31 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 		else if (koopa->GetState() == KOOPA_STATE_SHELL)
 		{
-			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			if (!isHoldingKoopa)
+			{
+				PickUpKoopa(koopa);
+			}
+			else
+			{
+				koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
 		}
 	}
-	else if (koopa->GetState() == KOOPA_STATE_SHELL) {
-		if (vx > 0) {
+	else if (koopa->GetState() == KOOPA_STATE_SHELL)
+	{
+		if (vx > 0)
+		{
 			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
-			koopa->SetSpeed(KOOPA_SLIDING_SPEED,0);
+			koopa->SetSpeed(KOOPA_SLIDING_SPEED, 0);
 		}
-		else if (vx < 0) {
+		else if (vx < 0)
+		{
 			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
 			koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
 		}
 	}
-	else 
+	else
 	{
 		if (untouchable == 0)
 		{
@@ -146,6 +155,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 	}
 }
+
 void CMario::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 {
 	CQuestion* question = dynamic_cast<CQuestion*>(e->obj);
@@ -434,5 +444,27 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+}
+
+void CMario::PickUpKoopa(CKoopa* koopa)
+{
+	if (koopa->GetState() == KOOPA_STATE_SHELL)
+	{
+		koopa->SetState(KOOPA_STATE_HELD);
+		koopa->SetHeld(true, this);
+		isHoldingKoopa = true;
+		heldKoopa = koopa;
+	}
+}
+
+void CMario::ReleaseKoopa()
+{
+	if (isHoldingKoopa && heldKoopa)
+	{
+		heldKoopa->SetHeld(false, nullptr);
+		heldKoopa->SetState(KOOPA_STATE_SHELL);
+		isHoldingKoopa = false;
+		heldKoopa = nullptr;
+	}
 }
 

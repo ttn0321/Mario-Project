@@ -49,29 +49,41 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-    vy += ay * dt;
-    vx += ax * dt;
-
-    ULONGLONG now = GetTickCount64();
-
-    if ((state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE) && now - state_start > KOOPA_SHELL_TIMEOUT)
+    if (isHeld && holder)
     {
-        SetState(KOOPA_STATE_TRANSITION);
+        float hx, hy;
+        // Follow the holder's position
+        holder->GetPosition(hx, hy);
+        x = hx;
+        y = hy - KOOPA_BBOX_HEIGHT_DIE / 2; // Adjust position as needed
     }
-    else if (state == KOOPA_STATE_TRANSITION && now - state_start > KOOPA_TRANSITION_TIMEOUT)
+    else
     {
-        SetState(KOOPA_STATE_WALKING);
-        y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
-    }
+        vy += ay * dt;
+        vx += ax * dt;
 
-    if (state == KOOPA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
-    {
-        vx = -vx; // Turn around
+        ULONGLONG now = GetTickCount64();
+
+        if ((state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE) && now - state_start > KOOPA_SHELL_TIMEOUT)
+        {
+            SetState(KOOPA_STATE_TRANSITION);
+        }
+        else if (state == KOOPA_STATE_TRANSITION && now - state_start > KOOPA_TRANSITION_TIMEOUT)
+        {
+            SetState(KOOPA_STATE_WALKING);
+            y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
+        }
+
+        if (state == KOOPA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
+        {
+            vx = -vx; // Turn around
+        }
     }
 
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }
+
 
 void CKoopa::Render()
 {
@@ -80,7 +92,7 @@ void CKoopa::Render()
         aniId = ID_ANI_KOOPA_WALKING_LEFT;
     else if (state == KOOPA_STATE_WALKING && vx > 0)
         aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-    if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE)
+    if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE || state == KOOPA_STATE_HELD)
     {
         aniId = ID_ANI_KOOPA_SHELL;
     }
@@ -112,8 +124,14 @@ void CKoopa::SetState(int state)
     case KOOPA_STATE_TRANSITION:
         vx = 0;
         break;
+    case KOOPA_STATE_HELD:
+        vx = 0;
+        vy = 0;
+        isHeld = true;
+        break;
     }
 }
+
 
 bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
 {

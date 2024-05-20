@@ -17,6 +17,7 @@
 #define KOOPA_STATE_SHELL 200
 #define KOOPA_STATE_SHELL_SLIDE 300
 #define KOOPA_STATE_TRANSITION 400
+#define KOOPA_STATE_HELD 500
 
 #define ID_ANI_KOOPA_WALKING_LEFT 8000
 #define ID_ANI_KOOPA_WALKING_RIGHT 8001
@@ -30,6 +31,9 @@ protected:
     float ay;
 
     ULONGLONG state_start;
+
+    bool isHeld;
+    CGameObject* holder;
 
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -45,4 +49,5 @@ protected:
 public:
     CKoopa(float x, float y);
     virtual void SetState(int state);
+    void SetHeld(bool isHeld, CGameObject* holder) { this->isHeld = isHeld; this->holder = holder; }
 };
