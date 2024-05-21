@@ -4,6 +4,7 @@
 #include "Koopa.h"
 #include "Collision.h"
 #include "Game.h"
+#include "Box.h"
 
 CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
 {
@@ -39,22 +40,38 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+    if (dynamic_cast<CBox*>(e->obj))
+        OnCollisionWithBox(e);
+
+    if (!e->obj->IsBlocking()) return;
+
+    if (e->ny != 0)
+    {
+        vy = 0;
+        if (e->ny < 0) isOnPlatform = true;
+    }
+    else if (e->nx != 0)
+    {
+        if (dynamic_cast<CBox*>(e->obj))
+            return;
+        vx = -vx;
+    }
+
     if (dynamic_cast<CGoomba*>(e->obj))
         OnCollisionWithGoomba(e);
     else if (dynamic_cast<CKoopa*>(e->obj))
         OnCollisionWithKoopa(e);
     else if (dynamic_cast<CQuestion*>(e->obj))
         OnCollisionWithQuestion(e);
-    if (!e->obj->IsBlocking()) return;
-    if (e->ny != 0)
-    {
-        vy = 0;
-    }
-    else if (e->nx != 0)
-    {
-        vx = -vx;
-    }
 }
+void CKoopa::OnCollisionWithBox(LPCOLLISIONEVENT e)
+{
+    vy = 0;
+    if (e->ny < 0) isOnPlatform = true;
+    isOnPlatformGravity();
+}
+
+
 void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 {
     CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -145,6 +162,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         }
     }
 
+    isOnPlatform = false;
+    isOnPlatformGravity();
+
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -206,7 +226,15 @@ bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
     {
         float l, t, r, b;
         obj->GetBoundingBox(l, t, r, b);
+
         if (dynamic_cast<CPlatform*>(obj)) // Assuming you have a platform class
+        {
+            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
+            {
+                return false; // Ground detected
+            }
+        }
+        else if (dynamic_cast<CBox*>(obj)) // Assuming you have a platform class
         {
             if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
             {
@@ -215,4 +243,11 @@ bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
         }
     }
     return true; // No ground detected
+}
+
+void CKoopa::isOnPlatformGravity() {
+    if (isOnPlatform)
+        this->ay = 0;
+    else
+        this->ay = KOOPA_GRAVITY;
 }

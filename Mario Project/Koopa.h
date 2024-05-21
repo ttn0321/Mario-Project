@@ -34,6 +34,7 @@ protected:
 
     bool isHeld;
     CGameObject* holder;
+    BOOLEAN isOnPlatform;
 
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -48,6 +49,7 @@ protected:
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
     void OnCollisionWithQuestion(LPCOLLISIONEVENT e);
+    void OnCollisionWithBox(LPCOLLISIONEVENT e);
 
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
 
@@ -55,4 +57,5 @@ public:
     CKoopa(float x, float y);
     virtual void SetState(int state);
     void SetHeld(bool isHeld, CGameObject* holder) { this->isHeld = isHeld; this->holder = holder; }
+    void isOnPlatformGravity();
 };
