@@ -27,24 +27,25 @@ void CQuestion::GetBoundingBox(float& l, float& t, float& r, float& b) {
     b = t + QUESTION_BBOX_HEIGHT;
 }
 
-void CQuestion::SetState(int state) {
-    if (state == QUESTION_STATE_AFTER && contain == 1) {
-
+void CQuestion::SetState(int state)
+{
+    if (state == QUESTION_STATE_AFTER && contain == 1)
+    {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        CCoin* coin = new CCoin(x, y - 16);  
+        CCoin* coin = new CCoin(x, y - 16);
         coin->SetState(COIN_STATE_SPAWN);
 
         objects.push_back(coin);
     }
-    if (state == QUESTION_STATE_AFTER && contain == 6) {
-        
+    if (state == QUESTION_STATE_AFTER && contain == 6)
+    {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        CMushroom* mushroom = new CMushroom(x, y - 16);  
-        mushroom->SetState(MUSHROOM_STATE_WALKING);
+        CMushroom* mushroom = new CMushroom(x, y);  // Initialize at the same position
+        mushroom->SetState(MUSHROOM_STATE_EMERGE);  // Set to emerge state
 
         objects.push_back(mushroom);
     }
