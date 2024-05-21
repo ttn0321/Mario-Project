@@ -40,8 +40,12 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-    if (dynamic_cast<CBox*>(e->obj))
-        OnCollisionWithBox(e);
+    if (dynamic_cast<CGoomba*>(e->obj))
+        OnCollisionWithGoomba(e);
+    else if (dynamic_cast<CKoopa*>(e->obj))
+        OnCollisionWithKoopa(e);
+    else if (dynamic_cast<CQuestion*>(e->obj))
+        OnCollisionWithQuestion(e);
 
     if (!e->obj->IsBlocking()) return;
 
@@ -56,19 +60,6 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
             return;
         vx = -vx;
     }
-
-    if (dynamic_cast<CGoomba*>(e->obj))
-        OnCollisionWithGoomba(e);
-    else if (dynamic_cast<CKoopa*>(e->obj))
-        OnCollisionWithKoopa(e);
-    else if (dynamic_cast<CQuestion*>(e->obj))
-        OnCollisionWithQuestion(e);
-}
-void CKoopa::OnCollisionWithBox(LPCOLLISIONEVENT e)
-{
-    vy = 0;
-    if (e->ny < 0) isOnPlatform = true;
-    isOnPlatformGravity();
 }
 
 
@@ -160,11 +151,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         {
             vx = -vx; // Turn around
         }
+        if (IsOnPlatform(coObjects))
+        {
+            vy=0;
+        }
+
     }
 
-    isOnPlatform = false;
-    isOnPlatformGravity();
-
+    
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -198,6 +192,7 @@ void CKoopa::SetState(int state)
     case KOOPA_STATE_SHELL:
         vx = 0;
         vy = 0;
+        y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
         break;
     case KOOPA_STATE_SHELL_SLIDE:
         vx = -KOOPA_SLIDING_SPEED;
@@ -244,10 +239,24 @@ bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
     }
     return true; // No ground detected
 }
+bool CKoopa::IsOnPlatform(vector<LPGAMEOBJECT>* coObjects) {
+    float xProbe = x;
+    float yProbe = y + KOOPA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
 
-void CKoopa::isOnPlatformGravity() {
-    if (isOnPlatform)
-        this->ay = 0;
-    else
-        this->ay = KOOPA_GRAVITY;
+    for (auto obj : *coObjects) {
+        float l, t, r, b;
+        obj->GetBoundingBox(l, t, r, b);
+
+        if (dynamic_cast<CPlatform*>(obj)) { // Assuming you have a platform class
+            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b) {
+                return true; // Ground detected
+            }
+        }
+        else if (dynamic_cast<CBox*>(obj)) { // Assuming you have a box class
+            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b) {
+                return true; // Ground detected
+            }
+        }
+    }
+    return false; // No ground detected
 }

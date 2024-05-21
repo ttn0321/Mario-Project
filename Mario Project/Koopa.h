@@ -49,13 +49,12 @@ protected:
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
     void OnCollisionWithQuestion(LPCOLLISIONEVENT e);
-    void OnCollisionWithBox(LPCOLLISIONEVENT e);
 
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
+    bool IsOnPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public:
     CKoopa(float x, float y);
     virtual void SetState(int state);
     void SetHeld(bool isHeld, CGameObject* holder) { this->isHeld = isHeld; this->holder = holder; }
-    void isOnPlatformGravity();
 };
