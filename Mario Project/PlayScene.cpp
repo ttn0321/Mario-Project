@@ -9,6 +9,8 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "Box.h"
+
 
 #include "SampleKeyEventHandler.h"
 
@@ -147,6 +149,33 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
+	case OBJECT_TYPE_BOX:
+	{
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int width = atoi(tokens[5].c_str());
+		int height = atoi(tokens[6].c_str());
+		int sprite_top_left = atoi(tokens[7].c_str());
+		int sprite_top_center = atoi(tokens[8].c_str());
+		int sprite_top_right = atoi(tokens[9].c_str());
+		int sprite_middle_left = atoi(tokens[10].c_str());
+		int sprite_middle_center = atoi(tokens[11].c_str());
+		int sprite_middle_right = atoi(tokens[12].c_str());
+		int sprite_bottom_left = atoi(tokens[13].c_str());
+		int sprite_bottom_center = atoi(tokens[14].c_str());
+		int sprite_bottom_right = atoi(tokens[15].c_str());
+
+		obj = new CBox(
+			x, y,
+			cell_width, cell_height, width, height,
+			sprite_top_left, sprite_top_center, sprite_top_right,
+			sprite_middle_left, sprite_middle_center, sprite_middle_right,
+			sprite_bottom_left, sprite_bottom_center, sprite_bottom_right
+		);
+
+		break;
+	}
+
 
 	case OBJECT_TYPE_PORTAL:
 	{

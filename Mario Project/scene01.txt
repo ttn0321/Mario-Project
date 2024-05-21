@@ -8,6 +8,7 @@ mushroom.txt
 question.txt
 goomba.txt
 koopa.txt
+box.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
