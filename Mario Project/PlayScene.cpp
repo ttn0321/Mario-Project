@@ -304,11 +304,19 @@ void CPlayScene::Update(DWORD dt)
 }
 void CPlayScene::Render()
 {
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CBox*>(objects[i]) != nullptr)
+		{
+			objects[i]->Render();
+		}
+	}
 	// First render all objects except question blocks and mushrooms
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CQuestion*>(objects[i]) == nullptr &&
-			dynamic_cast<CMushroom*>(objects[i]) == nullptr)
+			dynamic_cast<CMushroom*>(objects[i]) == nullptr &&
+			dynamic_cast<CBox*>(objects[i]) == nullptr)
 		{
 			objects[i]->Render();
 		}
@@ -328,9 +336,6 @@ void CPlayScene::Render()
 			objects[i]->Render();
 		}
 	}
-
-	// Finally, render mushrooms
-	
 }
 /*
 *	Clear all objects from this scene
