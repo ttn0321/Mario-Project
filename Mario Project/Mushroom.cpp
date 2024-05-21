@@ -3,10 +3,10 @@
 CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
 {
     this->ax = 0;
-    this->ay = MUSHROOM_GRAVITY;
-    this->initialY = y;
+    this->ay = 0;  // No gravity during the emergence
+    this->initialY = y;  // Track the starting position
     die_start = -1;
-    SetState(MUSHROOM_STATE_EMERGE);
+    SetState(MUSHROOM_STATE_EMERGE);  // Start with the emerging state
 }
 
 void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -50,7 +50,6 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-    // Check if the mushroom is emerging
     if (state == MUSHROOM_STATE_EMERGE)
     {
         y -= MUSHROOM_EMERGE_SPEED * dt;
@@ -101,6 +100,7 @@ void CMushroom::SetState(int state)
         break;
     case MUSHROOM_STATE_WALKING:
         vx = MUSHROOM_WALKING_SPEED;
+        ay = MUSHROOM_GRAVITY;  // Apply gravity
         break;
     case MUSHROOM_STATE_EMERGE:
         vy = 0;

@@ -273,13 +273,36 @@ void CPlayScene::Update(DWORD dt)
 
 	PurgeDeletedObjects();
 }
-
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
-}
+	// First render all objects except question blocks and mushrooms
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CQuestion*>(objects[i]) == nullptr &&
+			dynamic_cast<CMushroom*>(objects[i]) == nullptr)
+		{
+			objects[i]->Render();
+		}
+	}
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CMushroom*>(objects[i]) != nullptr)
+		{
+			objects[i]->Render();
+		}
+	}
+	// Then render question blocks
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CQuestion*>(objects[i]) != nullptr)
+		{
+			objects[i]->Render();
+		}
+	}
 
+	// Finally, render mushrooms
+	
+}
 /*
 *	Clear all objects from this scene
 */

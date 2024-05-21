@@ -17,7 +17,7 @@ void CQuestion::Render() {
 
     CAnimations* animations = CAnimations::GetInstance();
     animations->Get(aniId)->Render(x, y);
-    //RenderBoundingBox();
+    // RenderBoundingBox();
 }
 
 void CQuestion::GetBoundingBox(float& l, float& t, float& r, float& b) {
@@ -44,7 +44,7 @@ void CQuestion::SetState(int state)
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        CMushroom* mushroom = new CMushroom(x, y);  // Initialize at the same position
+        CMushroom* mushroom = new CMushroom(x, y);  // Position below the question block
         mushroom->SetState(MUSHROOM_STATE_EMERGE);  // Set to emerge state
 
         objects.push_back(mushroom);
