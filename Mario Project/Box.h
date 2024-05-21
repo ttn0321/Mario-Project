@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
+#define BOX_STATE_BLOCKING 100
+#define BOX_STATE_ALLOW 200
 
 class CBox : public CGameObject
 {
@@ -37,6 +39,9 @@ public:
     void Update(DWORD dt) {}
     void GetBoundingBox(float& l, float& t, float& r, float& b);
     void RenderBoundingBox();
+
+    virtual void SetState(int state);
+    virtual int IsBlocking();
 };
 
 typedef CBox* LPBOX;

@@ -72,5 +72,14 @@ void CBox::GetBoundingBox(float& l, float& t, float& r, float& b)
     l = x - (this->width * this->cellWidth) / 2 - 8;
     t = y - (this->height * this->cellHeight) / 2 - 8;
     r = l + this->width * this->cellWidth;
-    b = t + this->cellHeight; // Bounding box only at the top row
+    b = t + this->cellHeight-14; // Bounding box only at the top row
+}
+void CBox::SetState(int state) {
+    CGameObject::SetState(state);
+}
+int CBox::IsBlocking() {
+    if (state == BOX_STATE_ALLOW)
+        return 0;
+    else
+        return 1;
 }

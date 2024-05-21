@@ -10,6 +10,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "Koopa.h"
+#include "Box.h"
 
 #include "Collision.h"
 
@@ -40,6 +41,8 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CBox*>(e->obj))
+		OnCollisionWithBox(e);
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
@@ -63,6 +66,16 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+}
+void CMario::OnCollisionWithBox(LPCOLLISIONEVENT e)
+{
+	CBox* box = dynamic_cast<CBox*>(e->obj);
+	if (e->ny < 0) {
+		y = y - 7;
+		box->SetState(BOX_STATE_BLOCKING);
+	}
+	else
+		box->SetState(BOX_STATE_ALLOW);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
