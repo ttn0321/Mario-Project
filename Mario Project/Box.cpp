@@ -69,8 +69,8 @@ void CBox::Render()
 void CBox::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
     float halfCellWidth = this->cellWidth / 2;
-    l = x - (width * cellWidth) / 2;
-    t = y - (height * cellHeight) / 2;
-    r = l + width * cellWidth;
-    b = t + cellHeight; // Bounding box only at the top row
+    l = x - (this->width * this->cellWidth) / 2 - 8;
+    t = y - (this->height * this->cellHeight) / 2 - 8;
+    r = l + this->width * this->cellWidth;
+    b = t + this->cellHeight; // Bounding box only at the top row
 }
