@@ -70,6 +70,9 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="bgHorizontal.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -151,6 +154,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="bgHorizontal.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

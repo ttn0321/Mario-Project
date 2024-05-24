@@ -9,6 +9,7 @@ question.txt
 goomba.txt
 koopa.txt
 box.txt
+background.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -37,6 +38,8 @@ box.txt
 
 9	300	132	16	16	4	6	91200	92200	93200	94200	95200	96200	97200	98200	99200
 9	350	156	16	16	4	3	91300	92300	93300	94300	95300	96300	97300	98300	99300
+
+10	500	164	16	15	40	101000	101000	101000	
 
 #Portal 
 50	800	160	216	180	1
