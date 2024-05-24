@@ -150,6 +150,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="bgHorizontal.cpp" />
+    <ClCompile Include="bgVertical.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="bgHorizontal.h" />
+    <ClInclude Include="bgVertical.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Coin.h" />

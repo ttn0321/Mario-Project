@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "Box.h"
 #include "bgHorizontal.h"
+#include "bgVertical.h"
 
 
 #include "SampleKeyEventHandler.h"
@@ -168,7 +169,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
+	case OBJECT_TYPE_BACKGROUND_VERTICAL:
+	{
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_top_left = atoi(tokens[6].c_str());
+		int sprite_top_right = atoi(tokens[7].c_str());
+		int sprite_bottom_left = atoi(tokens[8].c_str());
+		int sprite_bottom_right = atoi(tokens[9].c_str());
 
+		obj = new CVertical(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_top_left, sprite_top_right, sprite_bottom_left, sprite_bottom_right
+		);
+
+		break;
+	}
 	case OBJECT_TYPE_BOX:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());
@@ -333,7 +351,8 @@ void CPlayScene::Render()
 	}
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CHorizontal*>(objects[i]) != nullptr)
+		if (dynamic_cast<CHorizontal*>(objects[i]) != nullptr ||
+			dynamic_cast<CVertical*>(objects[i]) != nullptr)
 		{
 			objects[i]->Render();
 		}
@@ -344,7 +363,8 @@ void CPlayScene::Render()
 		if (dynamic_cast<CQuestion*>(objects[i]) == nullptr &&
 			dynamic_cast<CMushroom*>(objects[i]) == nullptr &&
 			dynamic_cast<CBox*>(objects[i]) == nullptr &&
-			dynamic_cast<CHorizontal*>(objects[i]) == nullptr)
+			dynamic_cast<CHorizontal*>(objects[i]) == nullptr &&
+			dynamic_cast<CVertical*>(objects[i]) == nullptr)
 		{
 			objects[i]->Render();
 		}
