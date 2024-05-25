@@ -11,6 +11,7 @@ koopa.txt
 box.txt
 background.txt
 fire-plant.txt
+fireball.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -30,7 +31,9 @@ fire-plant.txt
 #8	200	10
 #8	250	10
 
-12	400	150	
+12	400	150
+
+13	400	120	
 
 #Platform
 5 	0	196	16	15	40	51000	52000	53000

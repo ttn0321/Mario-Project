@@ -13,7 +13,7 @@
 #include "bgHorizontal.h"
 #include "bgVertical.h"
 #include "FirePlant.h"
-
+#include "Fireball.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -134,6 +134,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	break;
 	
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_FIREBALL: obj = new CFireball(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{

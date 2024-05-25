@@ -79,6 +79,9 @@
     <ClCompile Include="FirePlant.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Fireball.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -169,6 +172,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="FirePlant.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
