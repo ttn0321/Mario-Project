@@ -76,6 +76,9 @@
     <ClCompile Include="bgVertical.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="FirePlant.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -163,6 +166,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="bgVertical.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FirePlant.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
