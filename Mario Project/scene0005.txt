@@ -12,6 +12,7 @@ box.txt
 background.txt
 fire-plant.txt
 fireball.txt
+pipe.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -42,7 +43,9 @@ fireball.txt
 
 
 10	500	180	16	15	2	101000	101000	101000	
-11	200	150	16	16	3	111000	111100	111200	111300		
+#11	200	150	16	16	3	111000	111100	111200	111300	
+
+14	200	148	3	
 
 #Portal 
 50	800	160	216	180	1

@@ -14,6 +14,7 @@
 #include "bgVertical.h"
 #include "FirePlant.h"
 #include "Fireball.h"
+#include "Pipe.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -186,6 +187,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			x, y,
 			cell_width, cell_height, length,
 			sprite_top_left, sprite_top_right, sprite_bottom_left, sprite_bottom_right
+		);
+
+		break;
+	}
+	case OBJECT_TYPE_PIPE:
+	{
+		int length = atoi(tokens[3].c_str());
+
+		obj = new CPipe(
+			x, y, length
 		);
 
 		break;
