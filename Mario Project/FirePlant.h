@@ -14,6 +14,7 @@
 
 #define FIRE_PLANT_SHOOT_DELAY 1000 // 1 second delay before shooting
 
+
 class CFirePlant : public CGameObject
 {
 protected:
@@ -21,9 +22,12 @@ protected:
     float ay;
 
     float initialY;  // Track the initial Y position
-    ULONGLONG die_start;
 
-    ULONGLONG shoot_start; // Timer for shooting
+    ULONGLONG state_start;
+
+    ULONGLONG shoot_start;
+    ULONGLONG shoot_stop;// Timer for shooting
+    bool shot_fired;
 
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

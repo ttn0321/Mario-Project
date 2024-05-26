@@ -6,13 +6,15 @@
 #define FIRE_PLANT_DETECT_RADIUS 50.0f // Radius to detect Mario
 #define FIRE_PLANT_SPEED 0.05f // Speed of emergence and hiding
 
+#define FIRE_PLANT_SHOOT_TIMEOUT 1500
+#define FIRE_PLANT_HIDE_TIMEOUT 2000 
+
 CFirePlant::CFirePlant(float x, float y) : CGameObject(x, y)
 {
     this->ax = 0;
     this->ay = 0;  // No gravity during the emergence
     this->initialY = y;
     this->SetState(FIRE_PLANT_STATE_HIDING); // Initial state
-    shoot_start = 0;
 }
 
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -48,16 +50,20 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     float distance = abs(marioX - x);
 
     bool marioNear = (distance < FIRE_PLANT_DETECT_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
+    ULONGLONG now = GetTickCount64();
 
-    if (state == FIRE_PLANT_STATE_HIDING && !marioNear)
+    if (state == FIRE_PLANT_STATE_HIDING && !marioNear && now - state_start > FIRE_PLANT_HIDE_TIMEOUT)
     {
         SetState(FIRE_PLANT_STATE_EMERGE);
     }
-    else if (state == FIRE_PLANT_STATE_SHOOT && GetTickCount64() - shoot_start > FIRE_PLANT_SHOOT_DELAY)
+    else if (state == FIRE_PLANT_STATE_SHOOT)
     {
-        ShootFireball();
-        SetState(FIRE_PLANT_STATE_HIDING);
+        if(shot_fired == false)
+            ShootFireball();
+        if(now - state_start > FIRE_PLANT_SHOOT_TIMEOUT)
+            SetState(FIRE_PLANT_STATE_HIDING);  
     }
+
 
     // Handle the movement logic
     if (state == FIRE_PLANT_STATE_EMERGE && y <= initialY - FIRE_PLANT_BBOX_HEIGHT)
@@ -86,7 +92,7 @@ void CFirePlant::Render()
 void CFirePlant::SetState(int state)
 {
     CGameObject::SetState(state);
-
+    state_start = GetTickCount64();
     switch (state)
     {
     case FIRE_PLANT_STATE_HIDING:
@@ -97,6 +103,7 @@ void CFirePlant::SetState(int state)
         break;
     case FIRE_PLANT_STATE_SHOOT:
         vy = 0; // Stay still
+        shot_fired = false;
         shoot_start = GetTickCount64(); // Start shooting timer
         break;
     }
@@ -110,4 +117,5 @@ void CFirePlant::ShootFireball()
     CFireball* fireball = new CFireball(x, y);
     fireball->SetSpeed(0.1f, 0); // Set appropriate speed for the fireball
     objects.push_back(fireball);
+    shot_fired = true;
 }
