@@ -59,7 +59,7 @@ void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
     float cellHeight_div_2 = this->cellHeight / 2;
     l = x - this->cellWidth / 2 -8;
     t = y - cellHeight_div_2;
-    r = l + this->cellWidth +18;
+    r = l + this->cellWidth +17;
     b = t + this->cellHeight * this->length;
 }
 
