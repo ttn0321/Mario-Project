@@ -4,7 +4,11 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define ID_ANI_FIRE_PLANT 12000
+#define ID_ANI_FIRE_PLANT_DOWN_LEFT 12000
+#define ID_ANI_FIRE_PLANT_UP_LEFT 12001
+#define ID_ANI_FIRE_PLANT_DOWN_RIGHT 12002
+#define ID_ANI_FIRE_PLANT_UP_RIGHT 12003
+
 #define FIRE_PLANT_BBOX_WIDTH 16
 #define FIRE_PLANT_BBOX_HEIGHT 32
 
@@ -22,6 +26,7 @@ protected:
     float ay;
 
     float initialY;  // Track the initial Y position
+    int direction;
 
     ULONGLONG state_start;
 
@@ -40,6 +45,7 @@ protected:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
     void ShootFireball();
+    void SetDirection();
 
 public:
     CFirePlant(float x, float y);

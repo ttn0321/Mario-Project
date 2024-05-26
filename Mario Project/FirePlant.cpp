@@ -76,6 +76,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     {
         y = initialY; // Stop at the initial position
         vy = 0; // Stop vertical movement
+        SetDirection();
     }
 
     CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -83,8 +84,21 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFirePlant::Render()
 {
-    int aniId = ID_ANI_FIRE_PLANT;
-
+    int aniId = ID_ANI_FIRE_PLANT_DOWN_LEFT;
+    switch (direction) {
+        case 1:
+            aniId = ID_ANI_FIRE_PLANT_DOWN_LEFT;
+            break;
+        case 2:
+            aniId = ID_ANI_FIRE_PLANT_UP_LEFT;
+            break;
+        case 3:
+            aniId = ID_ANI_FIRE_PLANT_DOWN_RIGHT;
+            break;
+        case 4:
+            aniId = ID_ANI_FIRE_PLANT_UP_RIGHT;
+            break;
+    }
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
     RenderBoundingBox();
 }
@@ -114,8 +128,29 @@ void CFirePlant::ShootFireball()
     CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
     vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-    CFireball* fireball = new CFireball(x, y);
-    fireball->SetSpeed(0.1f, 0); // Set appropriate speed for the fireball
+    CFireball* fireball = new CFireball(x, y-5);
+    fireball->SetSpeed(-0.1f, 0); // Set appropriate speed for the fireball
     objects.push_back(fireball);
     shot_fired = true;
 }
+
+void CFirePlant::SetDirection()
+{
+    // 1 = Down left, 2 = Up left, 3 = Down right, 4 = Up right
+    CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+    LPGAMEOBJECT marioObj = currentScene->GetPlayer();
+    CMario* mario = dynamic_cast<CMario*>(marioObj);  // Cast to CMario to access Mario-specific methods
+
+    float marioX, marioY;
+    mario->GetPosition(marioX, marioY);
+
+    if (x - marioX > 0 && y - marioY < 0)
+        direction = 1;
+    else if (x - marioX > 0 && y - marioY > 0)
+        direction = 2;
+    else if (x - marioX < 0 && y - marioY < 0)
+        direction = 3;
+    else if (x - marioX < 0 && y - marioY > 0)
+        direction = 4;
+}
+
