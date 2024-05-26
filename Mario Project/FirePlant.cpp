@@ -9,9 +9,10 @@
 CFirePlant::CFirePlant(float x, float y) : CGameObject(x, y)
 {
     this->ax = 0;
-    this->ay = 0;  
+    this->ay = 0;  // No gravity during the emergence
     this->initialY = y;
     this->SetState(FIRE_PLANT_STATE_HIDING); // Initial state
+    shoot_start = 0;
 }
 
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -46,12 +47,15 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
     float distance = abs(marioX - x);
 
-    if (state == FIRE_PLANT_STATE_HIDING && distance < FIRE_PLANT_DETECT_RADIUS)
+    bool marioNear = (distance < FIRE_PLANT_DETECT_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
+
+    if (state == FIRE_PLANT_STATE_HIDING && !marioNear)
     {
         SetState(FIRE_PLANT_STATE_EMERGE);
     }
-    else if (state == FIRE_PLANT_STATE_EMERGE && distance >= FIRE_PLANT_DETECT_RADIUS)
+    else if (state == FIRE_PLANT_STATE_SHOOT && GetTickCount64() - shoot_start > FIRE_PLANT_SHOOT_DELAY)
     {
+        ShootFireball();
         SetState(FIRE_PLANT_STATE_HIDING);
     }
 
@@ -60,6 +64,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     {
         y = initialY - FIRE_PLANT_BBOX_HEIGHT; // Stop at the target position
         vy = 0; // Stop vertical movement
+        SetState(FIRE_PLANT_STATE_SHOOT);
     }
     else if (state == FIRE_PLANT_STATE_HIDING && y >= initialY)
     {
@@ -90,5 +95,19 @@ void CFirePlant::SetState(int state)
     case FIRE_PLANT_STATE_EMERGE:
         vy = -FIRE_PLANT_SPEED;  // Move upwards
         break;
+    case FIRE_PLANT_STATE_SHOOT:
+        vy = 0; // Stay still
+        shoot_start = GetTickCount64(); // Start shooting timer
+        break;
     }
+}
+
+void CFirePlant::ShootFireball()
+{
+    CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+    vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+    CFireball* fireball = new CFireball(x, y);
+    fireball->SetSpeed(0.1f, 0); // Set appropriate speed for the fireball
+    objects.push_back(fireball);
 }
