@@ -17,11 +17,14 @@ class CFireball : public CGameObject {
 	ULONGLONG state_start;
 public:
 	CFireball(float x, float y) : CGameObject(x, y) {
-		
+		this->ax = 0;
+		this->ay = 0;
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void SetState(int state);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() { return 0; }
+	virtual int IsCollidable() { return 0; };
+	virtual int IsBlocking() { return 0; }
+	virtual void OnNoCollision(DWORD dt);
 };

@@ -7,10 +7,16 @@ void CFireball::Render()
 
 	//RenderBoundingBox();
 }
-
+void CFireball::OnNoCollision(DWORD dt)
+{
+	x += vx * dt;
+	y += vy * dt;
+};
 void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-	
+	vy += ay * dt;
+	vx += ax * dt;
 	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CFireball::GetBoundingBox(float& l, float& t, float& r, float& b)

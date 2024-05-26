@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include "GameObject.h"
 #include "Animation.h"
@@ -9,12 +8,16 @@
 #define FIRE_PLANT_BBOX_WIDTH 16
 #define FIRE_PLANT_BBOX_HEIGHT 32
 
+#define FIRE_PLANT_STATE_HIDING 100
+#define FIRE_PLANT_STATE_EMERGE 200
+
 class CFirePlant : public CGameObject
 {
 protected:
 	float ax;
 	float ay;
 
+	float initialY;  // Track the initial Y position
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
