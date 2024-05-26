@@ -4,6 +4,8 @@
 #include "Sprites.h"
 
 #include "Textures.h"
+#include "PlayScene.h"
+#include "FirePlant.h"
 
 void CPipe::RenderBoundingBox()
 {
@@ -59,4 +61,16 @@ void CPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
     t = y - cellHeight_div_2;
     r = l + this->cellWidth +18;
     b = t + this->cellHeight * this->length;
+}
+
+void CPipe::AddMob()
+{
+    if (contain == 1)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CFirePlant* fplant = new CFirePlant(x, y+9);
+        objects.push_back(fplant);
+    }
 }

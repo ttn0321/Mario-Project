@@ -194,9 +194,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE:
 	{
 		int length = atoi(tokens[3].c_str());
-
+		int contain = atoi(tokens[4].c_str());
 		obj = new CPipe(
-			x, y, length
+			x, y, length, contain
 		);
 
 		break;
