@@ -4,6 +4,7 @@
 #include "PlayScene.h"
 
 #define FIRE_PLANT_DETECT_RADIUS 50.0f // Radius to detect Mario
+#define FIRE_PLANT_SHOOT_NEAR_RADIUS 100.0f // Radius to detect Mario
 #define FIRE_PLANT_SPEED 0.05f // Speed of emergence and hiding
 
 #define FIRE_PLANT_SHOOT_TIMEOUT 1500
@@ -129,7 +130,32 @@ void CFirePlant::ShootFireball()
     vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
     CFireball* fireball = new CFireball(x, y-5);
-    fireball->SetSpeed(-0.1f, 0); // Set appropriate speed for the fireball
+    switch (fire_direction) {
+        case 1:
+            fireball->SetSpeed(-0.1f, 0.1f);
+            break;
+        case 2:
+            fireball->SetSpeed(-0.15f, 0.05f);
+            break;
+        case 3:
+            fireball->SetSpeed(-0.1f, -0.1f);
+            break;
+        case 4:
+            fireball->SetSpeed(-0.15f, -0.05f);
+            break;
+        case 5:
+            fireball->SetSpeed(0.1f, 0.1f);
+            break;
+        case 6:
+            fireball->SetSpeed(0.15f, 0.05f);
+            break;
+        case 7:
+            fireball->SetSpeed(0.1f, -0.1f);
+            break;
+        case 8:
+            fireball->SetSpeed(0.15f, -0.05f);
+            break;
+    }
     objects.push_back(fireball);
     shot_fired = true;
 }
@@ -143,6 +169,8 @@ void CFirePlant::SetDirection()
 
     float marioX, marioY;
     mario->GetPosition(marioX, marioY);
+    float distance = abs(marioX - x);
+    bool marioShootNear = (distance < FIRE_PLANT_SHOOT_NEAR_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
 
     if (x - marioX > 0 && y - marioY < 0)
         direction = 1;
@@ -152,5 +180,24 @@ void CFirePlant::SetDirection()
         direction = 3;
     else if (x - marioX < 0 && y - marioY > 0)
         direction = 4;
+    // 1 = Down left near, 2 = Down left far, 3 = Up left near, 4 = Up left far, 5 = Down right near, 6 = Down right far, 7 = Up right near, 8 = Up right far
+    if (x - marioX > 0 && y - marioY < 0 && marioShootNear == true)
+        fire_direction = 1;
+    else if (x - marioX > 0 && y - marioY < 0)
+        fire_direction = 2;
+    else if (x - marioX > 0 && y - marioY > 0 && marioShootNear == true)
+        fire_direction = 3;
+    else if (x - marioX > 0 && y - marioY > 0)
+        fire_direction = 4;
+    else if (x - marioX < 0 && y - marioY < 0 && marioShootNear == true)
+        fire_direction = 5;
+    else if (x - marioX < 0 && y - marioY < 0)
+        fire_direction = 6;
+    else if (x - marioX < 0 && y - marioY > 0 && marioShootNear == true)
+        fire_direction = 7;
+    else if (x - marioX < 0 && y - marioY > 0)
+        fire_direction = 8;
+
+
 }
 

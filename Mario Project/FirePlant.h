@@ -27,6 +27,7 @@ protected:
 
     float initialY;  // Track the initial Y position
     int direction;
+    int fire_direction;
 
     ULONGLONG state_start;
 
