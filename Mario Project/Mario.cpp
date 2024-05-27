@@ -11,6 +11,8 @@
 #include "Portal.h"
 #include "Koopa.h"
 #include "Box.h"
+#include "FirePlant.h"
+#include "Fireball.h"
 
 #include "Collision.h"
 
@@ -66,6 +68,43 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CFireball*>(e->obj))
+		OnCollisionWithFireball(e);
+	else if (dynamic_cast<CFirePlant*>(e->obj))
+		OnCollisionWithFirePlant(e);
+}
+void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
+{
+	if (untouchable == 0)
+	{
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+	}
+}
+void CMario::OnCollisionWithFireball(LPCOLLISIONEVENT e)
+{
+	
+	if (untouchable == 0)
+	{		
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+	}
 }
 void CMario::OnCollisionWithBox(LPCOLLISIONEVENT e)
 {

@@ -172,30 +172,30 @@ void CFirePlant::SetDirection()
     float distance = abs(marioX - x);
     bool marioShootNear = (distance < FIRE_PLANT_SHOOT_NEAR_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
 
-    if (x - marioX > 0 && y - marioY < 0)
+    if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0)
         direction = 1;
-    else if (x - marioX > 0 && y - marioY > 0)
+    else if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0)
         direction = 2;
-    else if (x - marioX < 0 && y - marioY < 0)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0)
         direction = 3;
-    else if (x - marioX < 0 && y - marioY > 0)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0)
         direction = 4;
     // 1 = Down left near, 2 = Down left far, 3 = Up left near, 4 = Up left far, 5 = Down right near, 6 = Down right far, 7 = Up right near, 8 = Up right far
-    if (x - marioX > 0 && y - marioY < 0 && marioShootNear == true)
+    if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0 && marioShootNear == true)
         fire_direction = 1;
-    else if (x - marioX > 0 && y - marioY < 0)
+    else if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0)
         fire_direction = 2;
-    else if (x - marioX > 0 && y - marioY > 0 && marioShootNear == true)
+    else if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0 && marioShootNear == true)
         fire_direction = 3;
-    else if (x - marioX > 0 && y - marioY > 0)
+    else if (x - marioX > 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0)
         fire_direction = 4;
-    else if (x - marioX < 0 && y - marioY < 0 && marioShootNear == true)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0 && marioShootNear == true)
         fire_direction = 5;
-    else if (x - marioX < 0 && y - marioY < 0)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY < 0)
         fire_direction = 6;
-    else if (x - marioX < 0 && y - marioY > 0 && marioShootNear == true)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0 && marioShootNear == true)
         fire_direction = 7;
-    else if (x - marioX < 0 && y - marioY > 0)
+    else if (x - marioX < 0 && initialY - FIRE_PLANT_BBOX_HEIGHT - marioY > 0)
         fire_direction = 8;
 
 
