@@ -85,6 +85,7 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -183,6 +184,7 @@
     <ClInclude Include="Pipe.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Leaf.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,6 +5,7 @@
 
 #define FIRE_PLANT_DETECT_RADIUS 50.0f // Radius to detect Mario
 #define FIRE_PLANT_SHOOT_NEAR_RADIUS 100.0f // Radius to detect Mario
+#define FIRE_PLANT_SHOOT_RANGE 200.0f // Radius to detect Mario
 #define FIRE_PLANT_SPEED 0.05f // Speed of emergence and hiding
 
 #define FIRE_PLANT_SHOOT_TIMEOUT 1500
@@ -51,9 +52,10 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     float distance = abs(marioX - x);
 
     bool marioNear = (distance < FIRE_PLANT_DETECT_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
+    bool marioInRange= (distance < FIRE_PLANT_SHOOT_RANGE);
     ULONGLONG now = GetTickCount64();
 
-    if (state == FIRE_PLANT_STATE_HIDING && !marioNear && now - state_start > FIRE_PLANT_HIDE_TIMEOUT)
+    if (state == FIRE_PLANT_STATE_HIDING && !marioNear && now - state_start > FIRE_PLANT_HIDE_TIMEOUT && marioInRange==true)
     {
         SetState(FIRE_PLANT_STATE_EMERGE);
     }
