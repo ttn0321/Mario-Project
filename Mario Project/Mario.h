@@ -144,7 +144,9 @@ public:
 		isOnPlatform = false;
 		coin = 0;
 	}
-
+	int GetLevel() {
+		return level;
+	}
 	bool isHoldingKoopa;
 	CKoopa* heldKoopa;
 	bool isAPressed;

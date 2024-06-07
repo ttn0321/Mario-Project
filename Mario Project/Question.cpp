@@ -1,6 +1,7 @@
 #include "Question.h"
 #include "Mushroom.h"
 #include "Coin.h"
+#include "Leaf.h"
 #include "PlayScene.h"
 #include "Game.h"
 
@@ -29,6 +30,10 @@ void CQuestion::GetBoundingBox(float& l, float& t, float& r, float& b) {
 
 void CQuestion::SetState(int state)
 {
+    CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+    LPGAMEOBJECT marioObj = currentScene->GetPlayer();
+    CMario* mario = dynamic_cast<CMario*>(marioObj);  // Cast to CMario to access Mario-specific methods
+
     if (state == QUESTION_STATE_AFTER && contain == 1)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -39,7 +44,17 @@ void CQuestion::SetState(int state)
 
         objects.push_back(coin);
     }
-    if (state == QUESTION_STATE_AFTER && contain == 6)
+    else if (state == QUESTION_STATE_AFTER && contain == 6 && mario->GetLevel() == 2)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CLeaf* leaf = new CLeaf(x, y - 14);
+        leaf->SetState(COIN_STATE_SPAWN);
+
+        objects.push_back(leaf);
+    }
+    else if (state == QUESTION_STATE_AFTER && contain == 6)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();

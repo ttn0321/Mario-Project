@@ -13,6 +13,7 @@ background.txt
 fire-plant.txt
 fireball.txt
 pipe.txt
+leaf.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
