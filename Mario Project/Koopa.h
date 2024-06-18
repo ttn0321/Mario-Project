@@ -51,7 +51,6 @@ protected:
     void OnCollisionWithQuestion(LPCOLLISIONEVENT e);
 
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
-    bool IsOnPlatform(vector<LPGAMEOBJECT>* coObjects);
 
 public:
     CKoopa(float x, float y);

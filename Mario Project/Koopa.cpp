@@ -151,10 +151,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         {
             vx = -vx; // Turn around
         }
-        if (IsOnPlatform(coObjects))
-        {
-            vy=0;
-        }
+        
 
     }
 
@@ -214,49 +211,5 @@ void CKoopa::SetState(int state)
 
 bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
 {
-    float xProbe = x + (vx > 0 ? KOOPA_BBOX_WIDTH / 2 : -KOOPA_BBOX_WIDTH / 2);
-    float yProbe = y + KOOPA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
-
-    for (auto obj : *coObjects)
-    {
-        float l, t, r, b;
-        obj->GetBoundingBox(l, t, r, b);
-
-        if (dynamic_cast<CPlatform*>(obj)) // Assuming you have a platform class
-        {
-            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
-            {
-                return false; // Ground detected
-            }
-        }
-        else if (dynamic_cast<CBox*>(obj)) // Assuming you have a platform class
-        {
-            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
-            {
-                return false; // Ground detected
-            }
-        }
-    }
-    return true; // No ground detected
-}
-bool CKoopa::IsOnPlatform(vector<LPGAMEOBJECT>* coObjects) {
-    float xProbe = x;
-    float yProbe = y + KOOPA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
-
-    for (auto obj : *coObjects) {
-        float l, t, r, b;
-        obj->GetBoundingBox(l, t, r, b);
-
-        if (dynamic_cast<CPlatform*>(obj)) { // Assuming you have a platform class
-            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b) {
-                return true; // Ground detected
-            }
-        }
-        else if (dynamic_cast<CBox*>(obj)) { // Assuming you have a box class
-            if (xProbe > l && xProbe < r && yProbe > t && yProbe < b) {
-                return true; // Ground detected
-            }
-        }
-    }
-    return false; // No ground detected
+    
 }
