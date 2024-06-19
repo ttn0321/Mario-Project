@@ -124,8 +124,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
     if (isHeld && holder)
     {
-        float hx, hy;
+        // Code for when Koopa is held by another object
         // Follow the holder's position
+        float hx, hy;
         holder->GetPosition(hx, hy);
         x = hx;
         y = hy - KOOPA_BBOX_HEIGHT_DIE / 2; // Adjust position as needed
@@ -147,18 +148,19 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
         }
 
-        if (state == KOOPA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
+        if (state == KOOPA_STATE_WALKING)
         {
-            vx = -vx; // Turn around
+            if (IsNearEdgeOfPlatform(coObjects, dt))
+            {
+                vx = -vx; // Turn around
+            }
         }
-        
-
     }
 
-    
-    CGameObject::Update(dt, coObjects);
+    CGameObject::Update(dt, coObjects); // Ensure dt is passed to CGameObject's Update method
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }
+
 
 
 void CKoopa::Render()
@@ -209,7 +211,38 @@ void CKoopa::SetState(int state)
 }
 
 
-bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
+bool CKoopa::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects, DWORD dt)
 {
-    
+    // Calculate future position 16 pixels ahead in the direction of movement
+    float futureX = x + vx * dt + (vx > 0 ? 16 : -16);
+
+    // Create a hypothetical future Koopa to check if it would fall off
+    CKoopa futureKoopa = *this;  // Create a copy of the current Koopa
+    futureKoopa.SetPosition(futureX, y);  // Move the future Koopa to the calculated position
+
+    // Assume the future Koopa is falling due to gravity (adjust as per your game's logic)
+    futureKoopa.vy += ay * dt;
+
+    // Scan collisions for the future Koopa (which checks if it would fall)
+    vector<LPCOLLISIONEVENT> coEvents;
+    CCollision::GetInstance()->Scan(&futureKoopa, dt, coObjects, coEvents);
+
+    // Check if the future Koopa is falling (no collisions below)
+    bool nearEdge = true;
+    for (auto& e : coEvents)
+    {
+        if (e->ny < 0)  // If there is a collision below the future Koopa, it's not near an edge
+        {
+            nearEdge = false;
+            break;
+        }
+    }
+
+    // Cleanup
+    for (auto& e : coEvents)
+        delete e;
+
+    return nearEdge;
 }
+
+

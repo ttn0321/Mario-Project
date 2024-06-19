@@ -172,13 +172,11 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 		else if (vx > 0)
 		{
-			koopa->SetState(KOOPA_STATE_SHELL);
 			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
 			koopa->SetSpeed(KOOPA_SLIDING_SPEED, 0);
 		}
 		else if (vx < 0)
 		{
-			koopa->SetState(KOOPA_STATE_SHELL);
 			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
 			koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
 		}
