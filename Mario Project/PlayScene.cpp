@@ -15,6 +15,7 @@
 #include "FirePlant.h"
 #include "Fireball.h"
 #include "Pipe.h"
+#include "Leaf.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -378,7 +379,8 @@ void CPlayScene::Render()
 			dynamic_cast<CMushroom*>(objects[i]) == nullptr &&
 			dynamic_cast<CBox*>(objects[i]) == nullptr &&
 			dynamic_cast<CHorizontal*>(objects[i]) == nullptr &&
-			dynamic_cast<CVertical*>(objects[i]) == nullptr)
+			dynamic_cast<CVertical*>(objects[i]) == nullptr &&
+			dynamic_cast<CLeaf*>(objects[i]) == nullptr)
 		{
 			objects[i]->Render();
 		}
@@ -394,6 +396,13 @@ void CPlayScene::Render()
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CQuestion*>(objects[i]) != nullptr)
+		{
+			objects[i]->Render();
+		}
+	}
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CLeaf*>(objects[i]) != nullptr)
 		{
 			objects[i]->Render();
 		}
