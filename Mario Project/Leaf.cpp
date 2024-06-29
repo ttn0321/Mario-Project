@@ -65,13 +65,13 @@ void CLeaf::SetState(int state)
 	case LEAF_STATE_FALL_RIGHT:
 		vx = LEAF_SPEED;
 		vy = LEAF_GRAVITY;
-		ay = 0.000015f;
+		ay = 0.00003f;
 		state_start = GetTickCount64(); // Record the start time of the spawn state
 		break;
 	case LEAF_STATE_FALL_LEFT:
 		vx = -LEAF_SPEED;
 		vy = LEAF_GRAVITY;
-		ay = 0.000015f;
+		ay = 0.00003f;
 		state_start = GetTickCount64(); // Record the start time of the spawn state
 		break;
 	case LEAF_STATE_NORMAL:
