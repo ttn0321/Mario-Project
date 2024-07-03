@@ -15,6 +15,7 @@
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
+#define MARIO_JUMP_RACOON_SPEED_Y		0.8f
 
 #define MARIO_GRAVITY			0.002f
 
@@ -139,8 +140,9 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start;
+	ULONGLONG untouchable_start,gliding_start;
 	BOOLEAN isOnPlatform;
+	BOOLEAN isFlying;
 	int coin; 
 
 

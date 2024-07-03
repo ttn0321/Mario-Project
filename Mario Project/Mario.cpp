@@ -29,7 +29,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
+	
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -481,9 +481,19 @@ void CMario::SetState(int state)
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
+		else if (level == MARIO_LEVEL_RACOON) {
+			if (isAPressed) {
+				vy = -MARIO_JUMP_RACOON_SPEED_Y;
+			}
+			if (!isOnPlatform && !isAPressed) {
+					vy = 0.0f;
+					ay = MARIO_GRAVITY/10;
+			}
+		}
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
+		ay = MARIO_GRAVITY;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 
