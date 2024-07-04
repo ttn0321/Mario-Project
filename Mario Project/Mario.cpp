@@ -14,6 +14,7 @@
 #include "FirePlant.h"
 #include "Fireball.h"
 #include "Leaf.h"
+#include "Switch.h"
 
 #include "Collision.h"
 
@@ -71,6 +72,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
+	else if (dynamic_cast<CSwitch*>(e->obj))
+		OnCollisionWithSwitch(e);
 	else if (dynamic_cast<CQuestion*>(e->obj))
 		OnCollisionWithQuestion(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -211,8 +214,15 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 	}
 }
-
-
+void CMario::OnCollisionWithSwitch(LPCOLLISIONEVENT e)
+{
+	CSwitch* sw = dynamic_cast<CSwitch*>(e->obj);
+	if (sw->GetState() != SWITCH_STATE_AFTER)
+	{
+		sw->SetState(SWITCH_STATE_AFTER);
+	}
+	
+}
 void CMario::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 {
 	CQuestion* question = dynamic_cast<CQuestion*>(e->obj);
