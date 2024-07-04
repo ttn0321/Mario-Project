@@ -44,7 +44,7 @@ void CQuestion::SetState(int state)
 
         objects.push_back(coin);
     }
-    else if (state == QUESTION_STATE_AFTER && contain == 6 && mario->GetLevel() == 2)
+    else if (state == QUESTION_STATE_AFTER && contain == 6 && mario->GetLevel() >= 2)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
