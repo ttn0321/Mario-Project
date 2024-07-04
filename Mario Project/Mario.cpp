@@ -13,6 +13,7 @@
 #include "Box.h"
 #include "FirePlant.h"
 #include "Fireball.h"
+#include "Leaf.h"
 
 #include "Collision.h"
 
@@ -29,7 +30,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	
+	if (isGliding && (GetTickCount64() - gliding_start > MARIO_GLIDE_TIME))
+	{
+		isGliding = false;
+		gliding_start = 0;
+		SetState(MARIO_STATE_RELEASE_JUMP);
+	}
+
+
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -61,6 +69,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CQuestion*>(e->obj))
 		OnCollisionWithQuestion(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -78,7 +88,7 @@ void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 	{
 		if (level > MARIO_LEVEL_SMALL)
 		{
-			level = MARIO_LEVEL_SMALL;
+			level = level - 1;
 			StartUntouchable();
 		}
 		else
@@ -95,7 +105,7 @@ void CMario::OnCollisionWithFireball(LPCOLLISIONEVENT e)
 	{		
 		if (level > MARIO_LEVEL_SMALL)
 		{
-			level = MARIO_LEVEL_SMALL;
+			level = level - 1;
 			StartUntouchable();
 		}
 		else
@@ -127,7 +137,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level = level - 1;
 					StartUntouchable();
 				}
 				else
@@ -189,7 +199,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level = level - 1;
 					StartUntouchable();
 				}
 				else
@@ -229,6 +239,14 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	if (level == MARIO_LEVEL_SMALL)
 	{
 		SetLevel(MARIO_LEVEL_BIG);
+	}
+}
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	e->obj->Delete();
+	if (level == MARIO_LEVEL_BIG)
+	{
+		SetLevel(MARIO_LEVEL_RACOON);
 	}
 }
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -488,6 +506,8 @@ void CMario::SetState(int state)
 			if (!isOnPlatform && !isAPressed) {
 					vy = 0.0f;
 					ay = MARIO_GRAVITY/10;
+					isGliding = true;
+					gliding_start = GetTickCount64();
 			}
 		}
 		break;
