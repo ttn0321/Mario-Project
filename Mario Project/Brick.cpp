@@ -1,12 +1,13 @@
 #include "Brick.h"
 #include "Switch.h"
+#include "Coin.h"
 #include "PlayScene.h"
 #include "Game.h"
 void CBrick::Render()
 {
-    int aniId = ID_ANI_BRICK_BEFORE;
-    if (state == BRICK_STATE_AFTER) {
-        aniId = ID_ANI_BRICK_AFTER;
+    int aniId = ID_ANI_BRICK_AFTER;
+    if (state == BRICK_STATE_BEFORE) {
+        aniId = ID_ANI_BRICK_BEFORE;
     }
     CAnimations* animations = CAnimations::GetInstance();
     animations->Get(aniId)->Render(x, y);
@@ -22,8 +23,16 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 }
 void CBrick::SetState(int state)
 {
-    CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-    LPGAMEOBJECT marioObj = currentScene->GetPlayer();
+    if (state == BRICK_STATE_COIN && type == 1)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CCoin* coin = new CCoin(x, y);
+
+        objects.push_back(coin);
+        isDeleted = true;
+    }
     if (state == BRICK_STATE_AFTER && type == 2)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();

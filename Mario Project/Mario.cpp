@@ -235,7 +235,7 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	{
 		if (brick->GetType() == 2)
 		{
-			if (brick->GetState() != BRICK_STATE_AFTER)
+			if (brick->GetState() == BRICK_STATE_BEFORE)
 			{
 				brick->SetState(BRICK_STATE_AFTER);
 

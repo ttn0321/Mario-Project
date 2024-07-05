@@ -1,4 +1,7 @@
 #include "Switch.h"
+#include "Brick.h"
+#include "PlayScene.h"
+#include "Game.h"
 void CSwitch::Render() {
     int aniId = ID_ANI_SWITCH_BEFORE;
     if (state == SWITCH_STATE_AFTER) {
@@ -18,6 +21,16 @@ void CSwitch::GetBoundingBox(float& l, float& t, float& r, float& b)
 }
 void CSwitch::SetState(int state)
 {
-	
+    if (state == SWITCH_STATE_AFTER) {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+        for (int i = 0; i < objects.size(); i++)
+        {
+            if (dynamic_cast<CBrick*>(objects[i]) != nullptr)
+            {
+                objects[i]->SetState(BRICK_STATE_COIN);
+            }
+        }
+    }
 	CGameObject::SetState(state);
 }

@@ -13,6 +13,7 @@
 
 #define BRICK_STATE_BEFORE 100
 #define BRICK_STATE_AFTER 200
+#define BRICK_STATE_COIN 300
 
 class CBrick : public CGameObject {
 	int type;
