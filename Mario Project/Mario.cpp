@@ -15,6 +15,7 @@
 #include "Fireball.h"
 #include "Leaf.h"
 #include "Switch.h"
+#include "Brick.h"
 
 #include "Collision.h"
 
@@ -84,6 +85,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireball(e);
 	else if (dynamic_cast<CFirePlant*>(e->obj))
 		OnCollisionWithFirePlant(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 }
 void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {
@@ -217,11 +220,28 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithSwitch(LPCOLLISIONEVENT e)
 {
 	CSwitch* sw = dynamic_cast<CSwitch*>(e->obj);
-	if (sw->GetState() != SWITCH_STATE_AFTER)
+	if (e->ny < 0)
 	{
-		sw->SetState(SWITCH_STATE_AFTER);
+		if (sw->GetState() != SWITCH_STATE_AFTER)
+		{
+			sw->SetState(SWITCH_STATE_AFTER);
+		}
 	}
-	
+}
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if (e->ny > 0)
+	{
+		if (brick->GetType() == 2)
+		{
+			if (brick->GetState() != BRICK_STATE_AFTER)
+			{
+				brick->SetState(BRICK_STATE_AFTER);
+
+			}
+		}
+	}
 }
 void CMario::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 {
