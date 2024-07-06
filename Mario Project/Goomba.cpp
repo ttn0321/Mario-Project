@@ -1,7 +1,8 @@
 #include "Goomba.h"
 
-CGoomba::CGoomba(float x, float y):CGameObject(x, y)
+CGoomba::CGoomba(float x, float y, int level):CGameObject(x, y)
 {
+	this->level = level;
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
@@ -57,9 +58,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isDeleted = true;
 		return;
 	}
-	if (state == GOOMBA_STATE_WALKING && IsNearEdgeOfPlatform(coObjects))
+	if (state == GOOMBA_STATE_WALKING)
 	{
-		vx = -vx; // Turn around
+		if (IsNearEdgeOfPlatform(coObjects, dt))
+		{
+			vx = -vx; // Turn around
+		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -96,22 +100,36 @@ void CGoomba::SetState(int state)
 	}
 }
 
-bool CGoomba::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects)
+bool CGoomba::IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects, DWORD dt)
 {
-	float xProbe = x + (vx > 0 ? GOOMBA_BBOX_WIDTH / 2 : -GOOMBA_BBOX_WIDTH / 2);
-	float yProbe = y + GOOMBA_BBOX_HEIGHT / 2 + 1; // Slightly below the Koopa's feet
+	// Calculate future position 16 pixels ahead in the direction of movement
+	float futureX = x + vx * dt + (vx > 0 ? 16 : -16);
 
-	for (auto obj : *coObjects)
+	// Create a hypothetical future Goomba to check if it would fall off
+	CGoomba futureGoomba = *this;  // Create a copy of the current Goomba
+	futureGoomba.SetPosition(futureX, y);  // Move the future Goomba to the calculated position
+
+	// Assume the future Goomba is falling due to gravity (adjust as per your game's logic)
+	futureGoomba.vy += ay * dt;
+
+	// Scan collisions for the future Goomba (which checks if it would fall)
+	vector<LPCOLLISIONEVENT> coEvents;
+	CCollision::GetInstance()->Scan(&futureGoomba, dt, coObjects, coEvents);
+
+	// Check if the future Goomba is falling (no collisions below)
+	bool nearEdge = true;
+	for (auto& e : coEvents)
 	{
-		float l, t, r, b;
-		obj->GetBoundingBox(l, t, r, b);
-		if (dynamic_cast<CPlatform*>(obj)) // Assuming you have a platform class
+		if (e->ny < 0)  // If there is a collision below the future Goomba, it's not near an edge
 		{
-			if (xProbe > l && xProbe < r && yProbe > t && yProbe < b)
-			{
-				return false; // Ground detected
-			}
+			nearEdge = false;
+			break;
 		}
 	}
-	return true; // No ground detected
+
+	// Cleanup
+	for (auto& e : coEvents)
+		delete e;
+
+	return nearEdge;
 }

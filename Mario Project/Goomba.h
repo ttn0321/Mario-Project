@@ -18,11 +18,16 @@
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
 
+#define GOOMBA_LEVEL_NORMAL 1
+#define GOOMBA_LEVEL_WING 2
+
 class CGoomba : public CGameObject
 {
 protected:
 	float ax;				
 	float ay; 
+
+	int level;
 
 	ULONGLONG die_start;
 
@@ -35,9 +40,11 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
+	bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects, DWORD dt);
 
 public: 	
-	CGoomba(float x, float y);
+	CGoomba(float x, float y,int level);
 	virtual void SetState(int state);
+	int GetLevel() { return level; }
+	void SetLevel(int level) { this->level = level; }
 };
