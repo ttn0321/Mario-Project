@@ -65,6 +65,15 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			vx = -vx; // Turn around
 		}
 	}
+	if (level == 2)
+	{
+		if (state==GOOMBA_STATE_WALKING && GetTickCount64() - state_start > GOOMBA_JUMP_TIME) {
+			SetState(GOOMBA_STATE_JUMPING);
+		}
+		if (state == GOOMBA_STATE_JUMPING && vy > 0) {
+			SetState(GOOMBA_STATE_WALKING);
+		}
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -73,6 +82,13 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGoomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;
+	if (level == 2) {
+		aniId = ID_ANI_GOOMBA_WING_WALKING;
+		if (state == GOOMBA_STATE_JUMPING)
+		{
+			aniId = ID_ANI_GOOMBA_WING_JUMPING;
+		}
+	}
 	if (state == GOOMBA_STATE_DIE) 
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
@@ -96,7 +112,13 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = GOOMBA_WALKING_SPEED;
+			if(level==2)
+				state_start = GetTickCount64();
 			break;
+		case GOOMBA_STATE_JUMPING:
+			vy = -GOOMBA_JUMP_SPEED; 
+			break;
+
 	}
 }
 

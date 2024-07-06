@@ -91,7 +91,13 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
     CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
     if (state == KOOPA_STATE_SHELL_SLIDE)
     {
-        goomba->SetState(GOOMBA_STATE_DIE);
+        if (goomba->GetState() != GOOMBA_STATE_DIE)
+        {
+            if (goomba->GetLevel() == 1)
+                goomba->SetState(GOOMBA_STATE_DIE);
+            else
+                goomba->SetLevel(1);
+        }
     }
 }
 void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
