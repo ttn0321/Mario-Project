@@ -6,8 +6,9 @@
 #include "Game.h"
 #include "Box.h"
 
-CKoopa::CKoopa(float x, float y) :CGameObject(x, y)
+CKoopa::CKoopa(float x, float y, int color) :CGameObject(x, y)
 {
+    this->color = color;
     this->ax = 0;
     this->ay = KOOPA_GRAVITY;
     state_start = -1;
@@ -144,7 +145,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
         ULONGLONG now = GetTickCount64();
 
-        if ((state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE) && now - state_start > KOOPA_SHELL_TIMEOUT)
+        if ((state == KOOPA_STATE_SHELL || state == KOOPA_STATE_HELD) && now - state_start > KOOPA_SHELL_TIMEOUT)
         {
             SetState(KOOPA_STATE_TRANSITION);
         }
@@ -172,18 +173,36 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
     int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-    if (state == KOOPA_STATE_WALKING && vx < 0)
-        aniId = ID_ANI_KOOPA_WALKING_LEFT;
-    else if (state == KOOPA_STATE_WALKING && vx > 0)
-        aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-    if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE || state == KOOPA_STATE_HELD)
-    {
-        aniId = ID_ANI_KOOPA_SHELL;
+    switch (color) {
+    case 1:
+        if (state == KOOPA_STATE_WALKING && vx < 0)
+            aniId = ID_ANI_KOOPA_WALKING_LEFT;
+        else if (state == KOOPA_STATE_WALKING && vx > 0)
+            aniId = ID_ANI_KOOPA_WALKING_RIGHT;
+        if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE || state == KOOPA_STATE_HELD)
+        {
+            aniId = ID_ANI_KOOPA_SHELL;
+        }
+        else if (state == KOOPA_STATE_TRANSITION)
+        {
+            aniId = ID_ANI_KOOPA_TRANSITION;
+        }
+        break;
+    case 2:
+        if (state == KOOPA_STATE_WALKING && vx < 0)
+            aniId = ID_ANI_GREEN_KOOPA_WALKING_LEFT;
+        else if (state == KOOPA_STATE_WALKING && vx > 0)
+            aniId = ID_ANI_GREEN_KOOPA_WALKING_RIGHT;
+        if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_SLIDE || state == KOOPA_STATE_HELD)
+        {
+            aniId = ID_ANI_GREEN_KOOPA_SHELL;
+        }
+        else if (state == KOOPA_STATE_TRANSITION)
+        {
+            aniId = ID_ANI_GREEN_KOOPA_TRANSITION;
+        }
     }
-    else if (state == KOOPA_STATE_TRANSITION)
-    {
-        aniId = ID_ANI_KOOPA_TRANSITION;
-    }
+    
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
     RenderBoundingBox();
 }

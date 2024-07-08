@@ -24,11 +24,18 @@
 #define ID_ANI_KOOPA_SHELL 8002
 #define ID_ANI_KOOPA_TRANSITION 8003
 
+#define ID_ANI_GREEN_KOOPA_WALKING_LEFT 8010
+#define ID_ANI_GREEN_KOOPA_WALKING_RIGHT 8011
+#define ID_ANI_GREEN_KOOPA_SHELL 8012
+#define ID_ANI_GREEN_KOOPA_TRANSITION 8013
+
 class CKoopa : public CGameObject
 {
 protected:
     float ax;
     float ay;
+
+    int color;
 
     ULONGLONG state_start;
 
@@ -53,7 +60,7 @@ protected:
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects, DWORD dt);
 
 public:
-    CKoopa(float x, float y);
+    CKoopa(float x, float y,int color);
     virtual void SetState(int state);
     void SetHeld(bool isHeld, CGameObject* holder) { this->isHeld = isHeld; this->holder = holder; }
 };

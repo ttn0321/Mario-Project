@@ -130,7 +130,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CGoomba(x, y, level);
 	}
 	break;
-	case OBJECT_TYPE_KOOPA: obj = new CKoopa(x, y); break;
+	case OBJECT_TYPE_KOOPA:
+	{
+		int color = atoi(tokens[3].c_str());
+		obj = new CKoopa(x, y, color);
+	}
+	break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_BRICK: 
 	{
