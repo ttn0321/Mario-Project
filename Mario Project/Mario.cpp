@@ -164,23 +164,30 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_TRANSITION)
-		{
-			koopa->SetState(KOOPA_STATE_SHELL);
+		if (koopa->GetLevel() != 3) {
+			if (koopa->GetState() == KOOPA_STATE_WALKING || koopa->GetState() == KOOPA_STATE_TRANSITION)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (koopa->GetState() == KOOPA_STATE_SHELL && isAPressed && !isHoldingKoopa)
+			{
+				PickUpKoopa(koopa);
+			}
+			else if (koopa->GetState() == KOOPA_STATE_SHELL && !isAPressed && !isHoldingKoopa)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (koopa->GetState() == KOOPA_STATE_SHELL_SLIDE)
+			{
+				koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
+			}
+		}
+		else {
+			koopa->SetLevel(2);
+			koopa->SetState(KOOPA_STATE_WALKING);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
-		else if (koopa->GetState() == KOOPA_STATE_SHELL && isAPressed && !isHoldingKoopa)
-		{
-			PickUpKoopa(koopa);
-		}
-		else if (koopa->GetState() == KOOPA_STATE_SHELL && !isAPressed && !isHoldingKoopa)
-		{
-			koopa->SetState(KOOPA_STATE_SHELL_SLIDE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
-		else if (koopa->GetState() == KOOPA_STATE_SHELL_SLIDE)
-		{
-			koopa->SetSpeed(-KOOPA_SLIDING_SPEED, 0);
 		}
 	}
 	else if (koopa->GetState() == KOOPA_STATE_SHELL)

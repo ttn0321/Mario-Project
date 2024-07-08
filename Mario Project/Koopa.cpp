@@ -6,9 +6,9 @@
 #include "Game.h"
 #include "Box.h"
 
-CKoopa::CKoopa(float x, float y, int color) :CGameObject(x, y)
+CKoopa::CKoopa(float x, float y, int level) :CGameObject(x, y)
 {
-    this->color = color;
+    this->level = level;
     this->ax = 0;
     this->ay = KOOPA_GRAVITY;
     state_start = -1;
@@ -155,11 +155,20 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
         }
 
-        if (state == KOOPA_STATE_WALKING)
+        if (state == KOOPA_STATE_WALKING && level != 3)
         {
             if (IsNearEdgeOfPlatform(coObjects, dt))
             {
                 vx = -vx; // Turn around
+            }
+        }
+        if (level == 3)
+        {
+            if (state == KOOPA_STATE_WALKING && GetTickCount64() - jump_start > KOOPA_JUMP_TIME) {
+                SetState(KOOPA_STATE_JUMPING);
+            }
+            if (state == KOOPA_STATE_JUMPING && vy > 0) {
+                SetState(KOOPA_STATE_WALKING);
             }
         }
     }
@@ -173,7 +182,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
     int aniId = ID_ANI_KOOPA_WALKING_LEFT;
-    switch (color) {
+    switch (level) {
     case 1:
         if (state == KOOPA_STATE_WALKING && vx < 0)
             aniId = ID_ANI_KOOPA_WALKING_LEFT;
@@ -201,6 +210,17 @@ void CKoopa::Render()
         {
             aniId = ID_ANI_GREEN_KOOPA_TRANSITION;
         }
+        break;
+    case 3:
+        if (state == KOOPA_STATE_WALKING && vx < 0)
+            aniId = ID_ANI_KOOPA_WING_WALKING_LEFT;
+        else if (state == KOOPA_STATE_WALKING && vx > 0)
+            aniId = ID_ANI_KOOPA_WING_WALKING_RIGHT;
+        else if (state == KOOPA_STATE_JUMPING && vx < 0)
+            aniId = ID_ANI_KOOPA_WING_JUMPING_LEFT;
+        else if (state == KOOPA_STATE_JUMPING && vx > 0)
+            aniId = ID_ANI_KOOPA_WING_JUMPING_RIGHT;
+        break;
     }
     
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -223,6 +243,8 @@ void CKoopa::SetState(int state)
         break;
     case KOOPA_STATE_WALKING:
         vx = -KOOPA_WALKING_SPEED;
+        if (level == 3)
+            jump_start = GetTickCount64();
         break;
     case KOOPA_STATE_TRANSITION:
         vx = 0;
@@ -231,6 +253,9 @@ void CKoopa::SetState(int state)
         vx = 0;
         vy = 0;
         isHeld = true;
+        break;
+    case KOOPA_STATE_JUMPING:
+        vy = -KOOPA_JUMP_SPEED;
         break;
     }
 }
