@@ -144,7 +144,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_SWITCH: obj = new CSwitch(x, y); break;
-	case OBJECT_TYPE_FIRE_PLANT: obj = new CFirePlant(x, y); break;
+	case OBJECT_TYPE_FIRE_PLANT:
+	{
+		int level = atoi(tokens[3].c_str());
+		obj = new CFirePlant(x, y, level);
+	}
 	case OBJECT_TYPE_QUESTION:
 	{
 		int contain = atoi(tokens[3].c_str());

@@ -70,7 +70,15 @@ void CPipe::AddMob()
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        CFirePlant* fplant = new CFirePlant(x, y+9);
+        CFirePlant* fplant = new CFirePlant(x, y+9,1);
+        objects.push_back(fplant);
+    }
+    if (contain == 2)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CFirePlant* fplant = new CFirePlant(x, y + 16, 2);
         objects.push_back(fplant);
     }
 }

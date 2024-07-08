@@ -9,6 +9,11 @@
 #define ID_ANI_FIRE_PLANT_DOWN_RIGHT 12002
 #define ID_ANI_FIRE_PLANT_UP_RIGHT 12003
 
+#define ID_ANI_GREEN_FIRE_PLANT_DOWN_LEFT 12010
+#define ID_ANI_GREEN_FIRE_PLANT_UP_LEFT 12011
+#define ID_ANI_GREEN_FIRE_PLANT_DOWN_RIGHT 12012
+#define ID_ANI_GREEN_FIRE_PLANT_UP_RIGHT 12013
+
 #define FIRE_PLANT_BBOX_WIDTH 16
 #define FIRE_PLANT_BBOX_HEIGHT 32
 
@@ -28,6 +33,8 @@ protected:
     float initialY;  // Track the initial Y position
     int direction;
     int fire_direction;
+
+    int level;
 
     ULONGLONG state_start;
 
@@ -49,6 +56,6 @@ protected:
     void SetDirection();
 
 public:
-    CFirePlant(float x, float y);
+    CFirePlant(float x, float y,int level);
     virtual void SetState(int state);
 };

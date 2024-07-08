@@ -11,8 +11,9 @@
 #define FIRE_PLANT_SHOOT_TIMEOUT 1500
 #define FIRE_PLANT_HIDE_TIMEOUT 2000 
 
-CFirePlant::CFirePlant(float x, float y) : CGameObject(x, y)
+CFirePlant::CFirePlant(float x, float y,int level) : CGameObject(x, y)
 {
+    this->level = level;
     this->ax = 0;
     this->ay = 0;  // No gravity during the emergence
     this->initialY = y;
@@ -51,7 +52,8 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
     float distance = abs(marioX - x);
 
-    bool marioNear = (distance < FIRE_PLANT_DETECT_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT);
+
+    bool marioNear = (distance < FIRE_PLANT_DETECT_RADIUS) && (abs(marioY - y) < FIRE_PLANT_BBOX_HEIGHT+7);
     bool marioInRange= (distance < FIRE_PLANT_SHOOT_RANGE);
     ULONGLONG now = GetTickCount64();
 
@@ -88,7 +90,8 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CFirePlant::Render()
 {
     int aniId = ID_ANI_FIRE_PLANT_DOWN_LEFT;
-    switch (direction) {
+    if (level == 1) {
+        switch (direction) {
         case 1:
             aniId = ID_ANI_FIRE_PLANT_DOWN_LEFT;
             break;
@@ -101,6 +104,23 @@ void CFirePlant::Render()
         case 4:
             aniId = ID_ANI_FIRE_PLANT_UP_RIGHT;
             break;
+        }
+    }
+    else if (level == 2) {
+        switch (direction) {
+        case 1:
+            aniId = ID_ANI_GREEN_FIRE_PLANT_DOWN_LEFT;
+            break;
+        case 2:
+            aniId = ID_ANI_GREEN_FIRE_PLANT_UP_LEFT;
+            break;
+        case 3:
+            aniId = ID_ANI_GREEN_FIRE_PLANT_DOWN_RIGHT;
+            break;
+        case 4:
+            aniId = ID_ANI_GREEN_FIRE_PLANT_UP_RIGHT;
+            break;
+        }
     }
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
     RenderBoundingBox();
