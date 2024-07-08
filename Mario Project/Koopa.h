@@ -65,6 +65,7 @@ protected:
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
     void OnCollisionWithQuestion(LPCOLLISIONEVENT e);
+    void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 
     bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects, DWORD dt);
 

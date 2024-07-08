@@ -5,6 +5,7 @@
 #include "Collision.h"
 #include "Game.h"
 #include "Box.h"
+#include "Brick.h"
 
 CKoopa::CKoopa(float x, float y, int level) :CGameObject(x, y)
 {
@@ -47,6 +48,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         OnCollisionWithKoopa(e);
     else if (dynamic_cast<CQuestion*>(e->obj))
         OnCollisionWithQuestion(e);
+    else if (dynamic_cast<CBrick*>(e->obj))
+        OnCollisionWithBrick(e);
 
     if (!e->obj->IsBlocking()) return;
 
@@ -86,7 +89,22 @@ void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
         }
     }
 }
+void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+    CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+    
+    if (brick->GetType() == 2)
+    {
+        if (brick->GetState() == BRICK_STATE_BEFORE)
+        {
+            brick->SetState(BRICK_STATE_AFTER);
 
+        }
+    }
+    else if(brick->GetType() == 1)
+        e->obj->Delete();
+    
+}
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
     CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
