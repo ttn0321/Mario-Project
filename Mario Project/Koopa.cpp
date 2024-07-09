@@ -92,18 +92,22 @@ void CKoopa::OnCollisionWithQuestion(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
     CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-    
-    if (brick->GetType() == 2)
+    if (state == KOOPA_STATE_SHELL_SLIDE)
     {
-        if (brick->GetState() == BRICK_STATE_BEFORE)
+        if (e->ny == 0)
         {
-            brick->SetState(BRICK_STATE_AFTER);
+            if (brick->GetType() == 2)
+            {
+                if (brick->GetState() == BRICK_STATE_BEFORE)
+                {
+                    brick->SetState(BRICK_STATE_AFTER);
 
+                }
+            }
+            else if (brick->GetType() == 1)
+                e->obj->Delete();
         }
     }
-    else if(brick->GetType() == 1)
-        e->obj->Delete();
-    
 }
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
@@ -173,7 +177,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             y -= (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_DIE) / 2;
         }
 
-        if (state == KOOPA_STATE_WALKING && level != 3)
+        if (state == KOOPA_STATE_WALKING)
         {
             if (IsNearEdgeOfPlatform(coObjects, dt))
             {
