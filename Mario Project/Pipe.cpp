@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "PlayScene.h"
 #include "FirePlant.h"
+#include "PiranhaPlant.h"
 
 void CPipe::RenderBoundingBox()
 {
@@ -79,6 +80,14 @@ void CPipe::AddMob()
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
         CFirePlant* fplant = new CFirePlant(x, y + 16, 2);
+        objects.push_back(fplant);
+    }
+    if (contain == 3)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CPiranhaPlant* fplant = new CPiranhaPlant(x, y + 16);
         objects.push_back(fplant);
     }
 }

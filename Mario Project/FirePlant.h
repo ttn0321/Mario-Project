@@ -51,7 +51,6 @@ protected:
     virtual void OnNoCollision(DWORD dt);
 
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-    bool IsNearEdgeOfPlatform(vector<LPGAMEOBJECT>* coObjects);
     void ShootFireball();
     void SetDirection();
 

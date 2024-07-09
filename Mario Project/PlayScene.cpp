@@ -17,6 +17,7 @@
 #include "Pipe.h"
 #include "Leaf.h"
 #include "Switch.h"
+#include "PiranhaPlant.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -137,6 +138,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	break;
 	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_PIRANHA_PLANT: obj = new CPiranhaPlant(x, y); break;
 	case OBJECT_TYPE_BRICK: 
 	{
 		int type = atoi(tokens[3].c_str());

@@ -91,6 +91,7 @@
     <ClCompile Include="Switch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -195,6 +196,7 @@
     <ClInclude Include="Switch.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="PiranhaPlant.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
