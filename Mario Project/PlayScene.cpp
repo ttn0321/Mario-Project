@@ -365,16 +365,20 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy;
+	float cx, cy, marioX, marioY;
+
 	player->GetPosition(cx, cy);
+	player->GetPosition(marioX, marioY);
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (marioY > 0)
+		cy = 0.0f;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
