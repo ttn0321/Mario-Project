@@ -44,13 +44,23 @@ void CQuestion::SetState(int state)
 
         objects.push_back(coin);
     }
+    else if (state == QUESTION_STATE_AFTER && contain == 3)
+    {
+        CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+        vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
+
+        CMushroom* mushroom = new CMushroom(x, y,2);  // Position below the question block
+        mushroom->SetState(MUSHROOM_STATE_EMERGE);  // Set to emerge state
+
+        objects.push_back(mushroom);
+    }
     else if (state == QUESTION_STATE_AFTER && contain == 6 && mario->GetLevel() >= 2)
     {
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
         CLeaf* leaf = new CLeaf(x, y - 14);
-        leaf->SetState(COIN_STATE_SPAWN);
+        leaf->SetState(LEAF_STATE_SPAWN);
 
         objects.push_back(leaf);
     }
@@ -59,7 +69,7 @@ void CQuestion::SetState(int state)
         CPlayScene* currentScene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
         vector<LPGAMEOBJECT>& objects = currentScene->GetObjects();
 
-        CMushroom* mushroom = new CMushroom(x, y);  // Position below the question block
+        CMushroom* mushroom = new CMushroom(x, y,1);  // Position below the question block
         mushroom->SetState(MUSHROOM_STATE_EMERGE);  // Set to emerge state
 
         objects.push_back(mushroom);

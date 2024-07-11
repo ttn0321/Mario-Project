@@ -137,7 +137,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CKoopa(x, y, level);
 	}
 	break;
-	case OBJECT_TYPE_MUSHROOM: obj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_MUSHROOM: 
+	{
+		int level = atoi(tokens[3].c_str());
+		obj = new CMushroom(x, y, level);
+	}
+							 break;
 	case OBJECT_TYPE_PIRANHA_PLANT: obj = new CPiranhaPlant(x, y); break;
 	case OBJECT_TYPE_BRICK: 
 	{
@@ -372,10 +377,10 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
+	cy = -200.0f;// game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
-	if (marioY > 0)
+	if (marioY > 0)		
 		cy = 0.0f;
 
 	CGame::GetInstance()->SetCamPos(cx, cy);

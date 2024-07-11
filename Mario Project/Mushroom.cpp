@@ -1,7 +1,8 @@
 #include "Mushroom.h"
 
-CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
+CMushroom::CMushroom(float x, float y,int level) : CGameObject(x, y)
 {
+    this->level = level;
     this->ax = 0;
     this->ay = 0;  // No gravity during the emergence
     this->initialY = y;  // Track the starting position
@@ -77,9 +78,9 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMushroom::Render()
 {
     int aniId = ID_ANI_MUSHROOM_WALKING;
-    if (state == MUSHROOM_STATE_DIE)
+    if (level==2)
     {
-        aniId = ID_ANI_MUSHROOM_DIE;
+        aniId = ID_ANI_GREEN_MUSHROOM_WALKING;
     }
 
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);

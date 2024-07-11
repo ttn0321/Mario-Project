@@ -158,7 +158,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         float hx, hy;
         holder->GetPosition(hx, hy);
         x = hx;
-        y = hy - KOOPA_BBOX_HEIGHT_DIE / 2; // Adjust position as needed
+        y = hy - KOOPA_BBOX_HEIGHT_DIE / 2 +4; // Adjust position as needed
     }
     else
     {

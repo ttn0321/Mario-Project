@@ -275,11 +275,15 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 }
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
-	e->obj->Delete();
-	if (level == MARIO_LEVEL_SMALL)
-	{
-		SetLevel(MARIO_LEVEL_BIG);
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);	
+	if (mushroom->GetLevel() == 1) {
+		if (level == MARIO_LEVEL_SMALL)
+		{
+			SetLevel(MARIO_LEVEL_BIG);
+		}
 	}
+	e->obj->Delete();
+
 }
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {

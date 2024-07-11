@@ -19,6 +19,7 @@
 
 #define ID_ANI_MUSHROOM_WALKING 6000
 #define ID_ANI_MUSHROOM_DIE 6001
+#define ID_ANI_GREEN_MUSHROOM_WALKING 6002
 
 class CMushroom : public CGameObject
 {
@@ -27,6 +28,7 @@ protected:
     float ay;
     float initialY;  // Track the initial Y position
     ULONGLONG die_start;
+    int level;
 
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -39,6 +41,7 @@ protected:
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-    CMushroom(float x, float y);
+    CMushroom(float x, float y, int level);
     virtual void SetState(int state);
+    int GetLevel() { return level; }
 };
