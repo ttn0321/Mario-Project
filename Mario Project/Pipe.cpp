@@ -91,3 +91,12 @@ void CPipe::AddMob()
         objects.push_back(fplant);
     }
 }
+void CPipe::SetState(int state) {
+    CGameObject::SetState(state);
+}
+int CPipe::IsBlocking() {
+    if (state == PIPE_STATE_PORTAL)
+        return 0;
+    else
+        return 1;
+}

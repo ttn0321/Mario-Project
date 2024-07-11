@@ -16,6 +16,7 @@
 #include "Leaf.h"
 #include "Switch.h"
 #include "Brick.h"
+#include "Pipe.h"
 
 #include "Collision.h"
 
@@ -87,6 +88,15 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFirePlant(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
+	else if (dynamic_cast<CPipe*>(e->obj))
+		OnCollisionWithPipe(e);
+}
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
+	if (state == MARIO_STATE_SIT && pipe->GetContain() == 4) {
+		pipe->SetState(PIPE_STATE_PORTAL);
+	}
 }
 void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {
