@@ -11,6 +11,7 @@ height	240
 2	scene02.txt
 5	scene0005.txt
 10	world-1-1.txt
+11	world-1-1-hidden.txt
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png

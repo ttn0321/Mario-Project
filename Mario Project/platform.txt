@@ -9,5 +9,9 @@
 
 51002	698	1	713	16	30
 
+51003	1055	188	1070	203	30
+
+51004	698	35	713	50	30
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
