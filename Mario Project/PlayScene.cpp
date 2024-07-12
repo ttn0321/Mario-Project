@@ -114,17 +114,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
+	case OBJECT_TYPE_MARIO: {
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		int level = atoi(tokens[3].c_str());
+		obj = new CMario(x, y, level);
+		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	}
 	case OBJECT_TYPE_GOOMBA:
 	{
 		int level = atoi(tokens[3].c_str());
@@ -142,7 +144,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int level = atoi(tokens[3].c_str());
 		obj = new CMushroom(x, y, level);
 	}
-							 break;
+	break;
 	case OBJECT_TYPE_PIRANHA_PLANT: obj = new CPiranhaPlant(x, y); break;
 	case OBJECT_TYPE_BRICK: 
 	{

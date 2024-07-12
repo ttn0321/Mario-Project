@@ -15,6 +15,21 @@ void CFireball::OnNoCollision(DWORD dt)
 void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	vy += ay * dt;
 	vx += ax * dt;
+
+	float cx, cy;
+	CGame* game = CGame::GetInstance();
+	game->GetCamPos(cx, cy);
+
+	float l, t, r, b;
+	l = cx - 32;
+	t = cy - 32;
+	r = cx+ 320 + 32;
+	b = cy + 240 + 32;
+	if (x<l || x>r || y<t || y>b) {
+		isDeleted = true;
+		return;
+	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

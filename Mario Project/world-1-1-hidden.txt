@@ -24,7 +24,7 @@ piranha-plant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	130	10
+0	130	10	3
 
 #COIN
 4	209	124

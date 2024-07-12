@@ -168,14 +168,14 @@ class CMario : public CGameObject
 	int GetAniIdRacoon();
 
 public:
-	CMario(float x, float y) : CGameObject(x, y)
+	CMario(float x, float y,int level) : CGameObject(x, y)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
-		level = MARIO_LEVEL_SMALL;
+		this->level = level;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;

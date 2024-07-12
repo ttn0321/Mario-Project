@@ -25,7 +25,7 @@ piranha-plant.txt
 
 # MARIO
 #0	120	10
-0	2348	148
+0	2348	116	3
 
 #BRICK
 1	1961	180	1
